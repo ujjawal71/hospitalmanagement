@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Doctors</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin - Doctors</h1>
+    <nav>
+      <a href="/pages/admin-dashboard.html">Dashboard</a>
+      <a href="/pages/admin-doctors.html">Doctors</a>
+      <a href="/pages/admin-departments.html">Departments</a>
+      <a href="/pages/admin-appointments.html">Appointments</a>
+      <a href="/pages/admin-users.html">Users</a>
+    </nav>
+    <span class="user-info" id="userInfo"></span>
+    <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
+  </header>
+  <main class="container">
+    <h2 class="mb-2">Manage Doctors</h2>
+    <button type="button" class="btn btn-primary mb-2" id="addDoctorBtn">Add Doctor</button>
+    <div id="message" class="hidden"></div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Email</th><th>Department</th><th>Specialization</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="doctorList"></tbody>
+      </table>
+    </div>
+
+    <div id="doctorModal" class="card hidden mt-2">
+      <h3 id="modalTitle">Add Doctor</h3>
+      <form id="doctorForm">
+        <input type="hidden" id="doctorId">
+        <label>Name</label>
+        <input type="text" id="docName" required>
+        <label>Email</label>
+        <input type="email" id="docEmail" required>
+        <label>Password</label>
+        <input type="password" id="docPassword" placeholder="Leave blank to keep existing">
+        <label>Department</label>
+        <select id="docDepartment" required></select>
+        <label>Specialization</label>
+        <input type="text" id="docSpec" placeholder="e.g. Cardiologist">
+        <label>Availability (text)</label>
+        <input type="text" id="docAvailability" placeholder="e.g. Mon-Fri 9-5">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelDoctor">Cancel</button>
+      </form>
+    </div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    if (!requireAuth('ADMIN')) throw new Error('Auth');
+    document.getElementById('userInfo').textContent = getUserName() + ' (Admin)';
+    document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
+
+    let departments = [];
+    let doctorsList = [];
+    async function loadDepartments() {
+      departments = await apiGet('/admin/departments');
+      const sel = document.getElementById('docDepartment');
+      sel.innerHTML = '<option value="">Select</option>' + departments.map(d => '<option value="' + d.id + '">' + d.name + '</option>').join('');
+    }
+
+    async function loadDoctors() {
+      doctorsList = await apiGet('/admin/doctors');
+      const tbody = document.getElementById('doctorList');
+      tbody.innerHTML = doctorsList.map(d => `
+        <tr>
+          <td>${d.doctorId}</td>
+          <td>${d.name}</td>
+          <td>${d.email}</td>
+          <td>${d.departmentName}</td>
+          <td>${d.specialization || '-'}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-secondary editDoctor" data-id="${d.doctorId}">Edit</button>
+            <button type="button" class="btn btn-sm btn-danger deleteDoctor" data-id="${d.doctorId}">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('.editDoctor').forEach(btn => btn.addEventListener('click', () => openEdit(btn.dataset.id)));
+      tbody.querySelectorAll('.deleteDoctor').forEach(btn => btn.addEventListener('click', () => deleteDoctor(btn.dataset.id)));
+    }
+
+    function showMsg(msg, isError) {
+      const el = document.getElementById('message');
+      el.textContent = msg;
+      el.className = 'alert ' + (isError ? 'alert-error' : 'alert-success');
+      el.classList.remove('hidden');
+    }
+
+    function openAdd() {
+      document.getElementById('modalTitle').textContent = 'Add Doctor';
+      document.getElementById('doctorId').value = '';
+      document.getElementById('doctorForm').reset();
+      document.getElementById('docPassword').placeholder = 'Required for new doctor';
+      document.getElementById('doctorModal').classList.remove('hidden');
+    }
+
+    function openEdit(id) {
+      const doc = doctorsList.find(d => String(d.doctorId) === String(id));
+      if (!doc) return;
+      document.getElementById('modalTitle').textContent = 'Edit Doctor';
+      document.getElementById('doctorId').value = id;
+      document.getElementById('docName').value = doc.name || '';
+      document.getElementById('docEmail').value = doc.email || '';
+      document.getElementById('docDepartment').value = doc.departmentId || '';
+      document.getElementById('docSpec').value = doc.specialization || '';
+      document.getElementById('docAvailability').value = doc.availability || '';
+      document.getElementById('docPassword').value = '';
+      document.getElementById('docPassword').placeholder = 'Leave blank to keep existing';
+      document.getElementById('doctorModal').classList.remove('hidden');
+    }
+
+    async function deleteDoctor(id) {
+      if (!confirm('Delete this doctor?')) return;
+      try {
+        await apiDelete('/admin/doctors/' + id);
+        showMsg('Doctor deleted');
+        loadDoctors();
+      } catch (e) {
+        showMsg(e.message, true);
+      }
+    }
+
+    document.getElementById('addDoctorBtn').addEventListener('click', openAdd);
+    document.getElementById('cancelDoctor').addEventListener('click', () => document.getElementById('doctorModal').classList.add('hidden'));
+
+    document.getElementById('doctorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('doctorId').value;
+      const payload = {
+        name: document.getElementById('docName').value,
+        email: document.getElementById('docEmail').value,
+        departmentId: parseInt(document.getElementById('docDepartment').value, 10),
+        specialization: document.getElementById('docSpec').value,
+        availability: document.getElementById('docAvailability').value
+      };
+      const pw = document.getElementById('docPassword').value;
+      if (pw) payload.password = pw;
+      try {
+        if (id) {
+          await apiPut('/admin/doctors/' + id, payload);
+          showMsg('Doctor updated');
+        } else {
+          await apiPost('/admin/doctors', payload);
+          showMsg('Doctor added');
+        }
+        document.getElementById('doctorModal').classList.add('hidden');
+        loadDoctors();
+      } catch (err) {
+        showMsg(err.message, true);
+      }
+    });
+
+    loadDepartments().then(loadDoctors);
+  </script>
+</body>
+</html>

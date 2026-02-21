@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Departments</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin - Departments</h1>
+    <nav>
+      <a href="/pages/admin-dashboard.html">Dashboard</a>
+      <a href="/pages/admin-doctors.html">Doctors</a>
+      <a href="/pages/admin-departments.html">Departments</a>
+      <a href="/pages/admin-appointments.html">Appointments</a>
+      <a href="/pages/admin-users.html">Users</a>
+    </nav>
+    <span class="user-info" id="userInfo"></span>
+    <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
+  </header>
+  <main class="container">
+    <h2 class="mb-2">Manage Departments</h2>
+    <button type="button" class="btn btn-primary mb-2" id="addDeptBtn">Add Department</button>
+    <div id="message" class="hidden"></div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Description</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="deptList"></tbody>
+      </table>
+    </div>
+
+    <div id="deptModal" class="card hidden mt-2">
+      <h3 id="deptModalTitle">Add Department</h3>
+      <form id="deptForm">
+        <input type="hidden" id="deptId">
+        <label>Name</label>
+        <input type="text" id="deptName" required placeholder="e.g. Cardiology">
+        <label>Description</label>
+        <input type="text" id="deptDesc" placeholder="Optional">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" id="cancelDept">Cancel</button>
+      </form>
+    </div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    if (!requireAuth('ADMIN')) throw new Error('Auth');
+    document.getElementById('userInfo').textContent = getUserName() + ' (Admin)';
+    document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
+
+    async function loadDepartments() {
+      const list = await apiGet('/admin/departments');
+      const tbody = document.getElementById('deptList');
+      tbody.innerHTML = list.map(d => `
+        <tr>
+          <td>${d.id}</td>
+          <td>${d.name}</td>
+          <td>${d.description || '-'}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-secondary editDept" data-id="${d.id}" data-name="${(d.name||'').replace(/"/g,'&quot;')}" data-desc="${(d.description||'').replace(/"/g,'&quot;')}">Edit</button>
+            <button type="button" class="btn btn-sm btn-danger deleteDept" data-id="${d.id}">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('.editDept').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('deptModalTitle').textContent = 'Edit Department';
+          document.getElementById('deptId').value = btn.dataset.id;
+          document.getElementById('deptName').value = btn.dataset.name || '';
+          document.getElementById('deptDesc').value = btn.dataset.desc || '';
+          document.getElementById('deptModal').classList.remove('hidden');
+        });
+      });
+      tbody.querySelectorAll('.deleteDept').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Delete this department?')) return;
+          try {
+            await apiDelete('/admin/departments/' + btn.dataset.id);
+            showMsg('Department deleted');
+            loadDepartments();
+          } catch (e) {
+            showMsg(e.message, true);
+          }
+        });
+      });
+    }
+
+    function showMsg(msg, isError) {
+      const el = document.getElementById('message');
+      el.textContent = msg;
+      el.className = 'alert ' + (isError ? 'alert-error' : 'alert-success');
+      el.classList.remove('hidden');
+    }
+
+    document.getElementById('addDeptBtn').addEventListener('click', () => {
+      document.getElementById('deptModalTitle').textContent = 'Add Department';
+      document.getElementById('deptId').value = '';
+      document.getElementById('deptForm').reset();
+      document.getElementById('deptModal').classList.remove('hidden');
+    });
+    document.getElementById('cancelDept').addEventListener('click', () => document.getElementById('deptModal').classList.add('hidden'));
+
+    document.getElementById('deptForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('deptId').value;
+      const payload = { name: document.getElementById('deptName').value, description: document.getElementById('deptDesc').value };
+      try {
+        if (id) {
+          await apiPut('/admin/departments/' + id, payload);
+          showMsg('Department updated');
+        } else {
+          await apiPost('/admin/departments', payload);
+          showMsg('Department added');
+        }
+        document.getElementById('deptModal').classList.add('hidden');
+        loadDepartments();
+      } catch (err) {
+        showMsg(err.message, true);
+      }
+    });
+
+    loadDepartments();
+  </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Users (Patients)</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin - Manage Users</h1>
+    <nav>
+      <a href="/pages/admin-dashboard.html">Dashboard</a>
+      <a href="/pages/admin-doctors.html">Doctors</a>
+      <a href="/pages/admin-departments.html">Departments</a>
+      <a href="/pages/admin-appointments.html">Appointments</a>
+      <a href="/pages/admin-users.html">Users</a>
+    </nav>
+    <span class="user-info" id="userInfo"></span>
+    <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
+  </header>
+  <main class="container">
+    <h2 class="mb-2">Patients</h2>
+    <div id="message" class="hidden"></div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="userList"></tbody>
+      </table>
+    </div>
+
+    <div id="userModal" class="card hidden mt-2">
+      <h3>Edit Patient</h3>
+      <form id="userForm">
+        <input type="hidden" id="patientId">
+        <label>Name</label>
+        <input type="text" id="patName" required>
+        <label>Email</label>
+        <input type="email" id="patEmail" required>
+        <label>New Password (optional)</label>
+        <input type="password" id="patPassword" placeholder="Leave blank to keep">
+        <label>Phone</label>
+        <input type="tel" id="patPhone">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="button" class="btn btn-secondary" id="cancelUser">Cancel</button>
+      </form>
+    </div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    if (!requireAuth('ADMIN')) throw new Error('Auth');
+    document.getElementById('userInfo').textContent = getUserName() + ' (Admin)';
+    document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
+
+    function showMsg(msg, isError) {
+      const el = document.getElementById('message');
+      el.textContent = msg;
+      el.className = 'alert ' + (isError ? 'alert-error' : 'alert-success');
+      el.classList.remove('hidden');
+    }
+
+    async function loadPatients() {
+      const list = await apiGet('/admin/patients');
+      const tbody = document.getElementById('userList');
+      tbody.innerHTML = list.map(p => `
+        <tr>
+          <td>${p.patientId}</td>
+          <td>${p.name}</td>
+          <td>${p.email}</td>
+          <td>${p.phone || '-'}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-secondary editUser" data-id="${p.patientId}" data-name="${(p.name||'').replace(/"/g,'&quot;')}" data-email="${(p.email||'').replace(/"/g,'&quot;')}" data-phone="${(p.phone||'').replace(/"/g,'&quot;')}">Edit</button>
+            <button type="button" class="btn btn-sm btn-danger deleteUser" data-id="${p.patientId}">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('.editUser').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('patientId').value = btn.dataset.id;
+          document.getElementById('patName').value = btn.dataset.name || '';
+          document.getElementById('patEmail').value = btn.dataset.email || '';
+          document.getElementById('patPhone').value = btn.dataset.phone || '';
+          document.getElementById('patPassword').value = '';
+          document.getElementById('userModal').classList.remove('hidden');
+        });
+      });
+      tbody.querySelectorAll('.deleteUser').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Delete this patient?')) return;
+          try {
+            await apiDelete('/admin/patients/' + btn.dataset.id);
+            showMsg('Patient deleted');
+            loadPatients();
+          } catch (e) {
+            showMsg(e.message, true);
+          }
+        });
+      });
+    }
+
+    document.getElementById('cancelUser').addEventListener('click', () => document.getElementById('userModal').classList.add('hidden'));
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('patientId').value;
+      const payload = {
+        name: document.getElementById('patName').value,
+        email: document.getElementById('patEmail').value,
+        phone: document.getElementById('patPhone').value || null
+      };
+      const pw = document.getElementById('patPassword').value;
+      if (pw) payload.password = pw;
+      try {
+        await apiPut('/admin/patients/' + id, payload);
+        showMsg('Patient updated');
+        document.getElementById('userModal').classList.add('hidden');
+        loadPatients();
+      } catch (err) {
+        showMsg(err.message, true);
+      }
+    });
+
+    loadPatients();
+  </script>
+</body>
+</html>

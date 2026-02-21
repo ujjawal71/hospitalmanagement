@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Doctor Dashboard</h1>
+    <nav>
+      <a href="/pages/doctor-dashboard.html">Dashboard</a>
+      <a href="/pages/doctor-appointments.html">Appointments</a>
+      <a href="/pages/doctor-timeslots.html">Time Slots</a>
+    </nav>
+    <span class="user-info" id="userInfo"></span>
+    <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
+  </header>
+  <main class="container">
+    <h2 class="mb-2">Welcome, <span id="docName"></span></h2>
+    <div class="stats">
+      <div class="stat-card"><span class="num" id="statAppointments">-</span><span class="label">My Appointments</span></div>
+      <div class="stat-card"><span class="num" id="statSlots">-</span><span class="label">Time Slots</span></div>
+    </div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    if (!requireAuth('DOCTOR')) throw new Error('Auth');
+    document.getElementById('userInfo').textContent = getUserName() + ' (Doctor)';
+    document.getElementById('docName').textContent = getUserName();
+    document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
+
+    (async () => {
+      try {
+        const [appointments, slots] = await Promise.all([
+          apiGet('/doctor/appointments'),
+          apiGet('/doctor/time-slots')
+        ]);
+        document.getElementById('statAppointments').textContent = appointments.length;
+        document.getElementById('statSlots').textContent = slots.length;
+      } catch (e) {
+        document.querySelector('.stats').innerHTML = '<p class="alert alert-error">' + e.message + '</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

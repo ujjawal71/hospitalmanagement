@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Book Appointment</h1>
+    <nav>
+      <a href="/pages/patient-dashboard.html">Dashboard</a>
+      <a href="/pages/patient-book.html">Book Appointment</a>
+      <a href="/pages/patient-appointments.html">My Appointments</a>
+      <a href="/pages/patient-profile.html">Profile</a>
+    </nav>
+    <span class="user-info" id="userInfo"></span>
+    <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
+  </header>
+  <main class="container">
+    <h2 class="mb-2">Search Doctor by Department</h2>
+    <div class="card">
+      <label>Department</label>
+      <select id="deptSelect">
+        <option value="">Select department</option>
+      </select>
+      <button type="button" class="btn btn-primary mt-1" id="searchDoctors">Search Doctors</button>
+    </div>
+    <div id="doctorList" class="card hidden">
+      <h3>Doctors</h3>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Specialization</th><th>Availability</th><th>Book</th></tr>
+        </thead>
+        <tbody id="doctorTable"></tbody>
+      </table>
+    </div>
+    <div id="bookModal" class="card hidden mt-2">
+      <h3>Book Appointment</h3>
+      <form id="bookForm">
+        <input type="hidden" id="bookDoctorId">
+        <p>Doctor: <strong id="bookDoctorName"></strong></p>
+        <label>Date</label>
+        <input type="date" id="bookDate" required>
+        <label>Time</label>
+        <input type="time" id="bookTime" required>
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+        <button type="button" class="btn btn-secondary" id="cancelBook">Cancel</button>
+      </form>
+    </div>
+    <div id="message" class="hidden"></div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    if (!requireAuth('PATIENT')) throw new Error('Auth');
+    document.getElementById('userInfo').textContent = getUserName() + ' (Patient)';
+    document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
+
+    let doctors = [];
+    async function loadDepartments() {
+      const list = await apiGet('/patient/departments');
+      const sel = document.getElementById('deptSelect');
+      sel.innerHTML = '<option value="">Select department</option>' + list.map(d => '<option value="' + d.id + '">' + d.name + '</option>').join('');
+    }
+
+    document.getElementById('searchDoctors').addEventListener('click', async () => {
+      const deptId = document.getElementById('deptSelect').value;
+      if (!deptId) {
+        document.getElementById('message').textContent = 'Select a department';
+        document.getElementById('message').className = 'alert alert-error';
+        document.getElementById('message').classList.remove('hidden');
+        return;
+      }
+      try {
+        doctors = await apiGet('/patient/doctors/by-department/' + deptId);
+        const tbody = document.getElementById('doctorTable');
+        tbody.innerHTML = doctors.map(d => `
+          <tr>
+            <td>${d.name}</td>
+            <td>${d.specialization || '-'}</td>
+            <td>${d.availability || '-'}</td>
+            <td><button type="button" class="btn btn-sm btn-primary bookBtn" data-id="${d.doctorId}" data-name="${(d.name||'').replace(/"/g,'&quot;')}">Book</button></td>
+          </tr>
+        `).join('');
+        document.getElementById('doctorList').classList.remove('hidden');
+        document.getElementById('message').classList.add('hidden');
+        tbody.querySelectorAll('.bookBtn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.getElementById('bookDoctorId').value = btn.dataset.id;
+            document.getElementById('bookDoctorName').textContent = btn.dataset.name;
+            document.getElementById('bookModal').classList.remove('hidden');
+          });
+        });
+      } catch (e) {
+        document.getElementById('message').textContent = e.message;
+        document.getElementById('message').className = 'alert alert-error';
+        document.getElementById('message').classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('cancelBook').addEventListener('click', () => document.getElementById('bookModal').classList.add('hidden'));
+    document.getElementById('bookForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const doctorId = document.getElementById('bookDoctorId').value;
+      const date = document.getElementById('bookDate').value;
+      const time = document.getElementById('bookTime').value;
+      try {
+        await apiPost('/patient/appointments?doctorId=' + doctorId + '&date=' + date + '&time=' + time);
+        document.getElementById('message').textContent = 'Appointment booked successfully.';
+        document.getElementById('message').className = 'alert alert-success';
+        document.getElementById('message').classList.remove('hidden');
+        document.getElementById('bookModal').classList.add('hidden');
+        document.getElementById('bookForm').reset();
+      } catch (err) {
+        document.getElementById('message').textContent = err.message;
+        document.getElementById('message').className = 'alert alert-error';
+        document.getElementById('message').classList.remove('hidden');
+      }
+    });
+
+    loadDepartments();
+  </script>
+</body>
+</html>

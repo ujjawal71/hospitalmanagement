@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Doctor Appointment Booking</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Hospital – Doctor Appointment Booking</h1>
+  </header>
+  <main class="container">
+    <div class="login-box card">
+      <h1>Login</h1>
+      <div class="role-tabs">
+        <button type="button" data-role="ADMIN">Admin</button>
+        <button type="button" data-role="DOCTOR">Doctor</button>
+        <button type="button" data-role="PATIENT" class="active">Patient</button>
+      </div>
+      <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required placeholder="your@email.com">
+        <label>Password</label>
+        <input type="password" id="loginPassword" required>
+        <input type="hidden" id="loginRole" value="PATIENT">
+        <div id="loginError" class="alert alert-error hidden"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
+      </form>
+      <p class="mt-2 text-muted">New patient? <a href="#" id="showRegister">Register here</a></p>
+    </div>
+
+    <div id="registerBox" class="login-box card hidden">
+      <h1>Patient Registration</h1>
+      <form id="registerForm">
+        <label>Name</label>
+        <input type="text" id="regName" required>
+        <label>Email</label>
+        <input type="email" id="regEmail" required>
+        <label>Password</label>
+        <input type="password" id="regPassword" required>
+        <label>Phone</label>
+        <input type="tel" id="regPhone" placeholder="Optional">
+        <div id="registerError" class="alert alert-error hidden"></div>
+        <div id="registerSuccess" class="alert alert-success hidden"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Register</button>
+      </form>
+      <p class="mt-2 text-muted"><a href="#" id="showLogin">Back to Login</a></p>
+    </div>
+  </main>
+  <script src="/js/app.js"></script>
+  <script>
+    let currentRole = 'PATIENT';
+    document.querySelectorAll('.role-tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentRole = btn.dataset.role;
+        document.getElementById('loginRole').value = currentRole;
+      });
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('loginError');
+      errEl.classList.add('hidden');
+      try {
+        await login(
+          document.getElementById('loginEmail').value,
+          document.getElementById('loginPassword').value,
+          currentRole
+        );
+        redirectByRole();
+      } catch (err) {
+        errEl.textContent = err.message || 'Login failed';
+        errEl.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('showRegister').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector('.login-box').classList.add('hidden');
+      document.getElementById('registerBox').classList.remove('hidden');
+    });
+    document.getElementById('showLogin').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('registerBox').classList.add('hidden');
+      document.querySelector('.login-box').classList.remove('hidden');
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('registerError');
+      const okEl = document.getElementById('registerSuccess');
+      errEl.classList.add('hidden');
+      okEl.classList.add('hidden');
+      try {
+        await register({
+          name: document.getElementById('regName').value,
+          email: document.getElementById('regEmail').value,
+          password: document.getElementById('regPassword').value,
+          phone: document.getElementById('regPhone').value || null
+        });
+        okEl.textContent = 'Registration successful. Please login.';
+        okEl.classList.remove('hidden');
+        document.getElementById('registerForm').reset();
+      } catch (err) {
+        errEl.textContent = err.message || 'Registration failed';
+        errEl.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
