@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Diagram - Online Doctor Appointment Booking System</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; color: #1e293b; padding: 2rem; line-height: 1.6; }
+        h1 { text-align: center; margin-bottom: 0.5rem; color: #0f766e; }
+        .subtitle { text-align: center; margin-bottom: 2rem; color: #64748b; }
+        .diagram-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2rem; margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; min-height: 480px; }
+        .mermaid { background: #fff; }
+        section { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+        section h2 { margin-bottom: 1rem; color: #0f766e; font-size: 1.25rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+        th, td { padding: 0.5rem 0.75rem; text-align: left; border: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; font-weight: 600; }
+        ul { margin-left: 1.25rem; margin-top: 0.5rem; }
+        li { margin-bottom: 0.25rem; }
+        .note { font-size: 0.9rem; color: #64748b; margin-top: 1rem; }
+        a { color: #0d9488; }
+    </style>
+</head>
+<body>
+    <h1>Entity-Relationship Diagram</h1>
+    <p class="subtitle">Online Doctor Appointment Booking System</p>
+    <div class="diagram-container">
+        <div class="mermaid">
+erDiagram
+    ADMIN {
+        long id PK
+        string name
+        string email UK
+        string password
+    }
+    DEPARTMENT {
+        long id PK
+        string name UK
+        string description
+    }
+    PATIENT {
+        long patient_id PK
+        string name
+        string email UK
+        string password
+        string phone
+    }
+    DOCTOR {
+        long doctor_id PK
+        string name
+        string email UK
+        string department_id FK
+        string specialization
+        string availability
+    }
+    APPOINTMENT {
+        long appointment_id PK
+        long patient_id FK
+        long doctor_id FK
+        date date
+        time time
+        string status
+    }
+    TIME_SLOT {
+        long id PK
+        long doctor_id FK
+        date slot_date
+        time start_time
+        time end_time
+        boolean available
+    }
+    DEPARTMENT ||--o{ DOCTOR : has
+    PATIENT ||--o{ APPOINTMENT : books
+    DOCTOR ||--o{ APPOINTMENT : has
+    DOCTOR ||--o{ TIME_SLOT : has
+        </div>
+    </div>
+    <section>
+        <h2>Entity Descriptions</h2>
+        <table>
+            <thead><tr><th>Entity</th><th>Primary Key</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>Admin</td><td>id</td><td>System administrators</td></tr>
+                <tr><td>Department</td><td>id</td><td>Hospital departments (Cardiology, Dental, etc.)</td></tr>
+                <tr><td>Patient</td><td>patient_id</td><td>Registered patients</td></tr>
+                <tr><td>Doctor</td><td>doctor_id</td><td>Doctors with department, specialization</td></tr>
+                <tr><td>Appointment</td><td>appointment_id</td><td>Booked appointments (PENDING/APPROVED/COMPLETED/CANCELLED)</td></tr>
+                <tr><td>TimeSlot</td><td>id</td><td>Doctor availability slots</td></tr>
+            </tbody>
+        </table>
+        <p class="note"><strong>PK</strong> = Primary Key &nbsp;|&nbsp; <strong>UK</strong> = Unique &nbsp;|&nbsp; <strong>FK</strong> = Foreign Key</p>
+    </section>
+    <p style="text-align:center;"><a href="/index.html">Back to App</a> &nbsp;|&nbsp; <a href="/DFD-DIAGRAM.html">View DFD Diagram</a></p>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>

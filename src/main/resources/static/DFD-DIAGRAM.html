@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFD - Online Doctor Appointment Booking System</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; color: #1e293b; padding: 2rem; line-height: 1.6; }
+        h1 { text-align: center; margin-bottom: 0.5rem; color: #0f766e; }
+        .subtitle { text-align: center; margin-bottom: 2rem; color: #64748b; }
+        .diagram-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2rem; margin-bottom: 2rem; min-height: 320px; display: flex; justify-content: center; align-items: center; }
+        .mermaid { background: #fff; }
+        section { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 1.5rem 2rem; margin-bottom: 1.5rem; }
+        section h2 { margin-bottom: 1rem; color: #0f766e; font-size: 1.25rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+        th, td { padding: 0.5rem 0.75rem; text-align: left; border: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; font-weight: 600; }
+        a { color: #0d9488; }
+    </style>
+</head>
+<body>
+    <h1>Data Flow Diagram (DFD)</h1>
+    <p class="subtitle">Online Doctor Appointment Booking System</p>
+    <section>
+        <h2>Level 0 – Context Diagram</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart LR
+    subgraph External
+        Patient([Patient])
+        Doctor([Doctor])
+        Admin([Admin])
+    end
+    subgraph System
+        SYS[Doctor Appointment Booking System]
+    end
+    Patient <--> SYS
+    Doctor <--> SYS
+    Admin <--> SYS
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>Level 1 – Processes & Data Stores</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart TB
+    subgraph Users
+        P([Patient])
+        D([Doctor])
+        A([Admin])
+    end
+    subgraph Processes
+        P1[1.0 Authentication]
+        P2[2.0 Manage Doctors & Depts]
+        P3[3.0 Manage Appointments]
+        P4[4.0 Manage Time Slots]
+        P5[5.0 Manage Users/Profile]
+    end
+    subgraph DataStores
+        DS1[(Patients)]
+        DS2[(Doctors)]
+        DS3[(Departments)]
+        DS4[(Appointments)]
+        DS5[(Time Slots)]
+        DS6[(Admins)]
+    end
+    P --> P1
+    P --> P3
+    P --> P5
+    D --> P1
+    D --> P3
+    D --> P4
+    A --> P1
+    A --> P2
+    A --> P3
+    A --> P5
+    P1 --> DS1
+    P1 --> DS2
+    P1 --> DS6
+    P2 --> DS2
+    P2 --> DS3
+    P3 --> DS4
+    P4 --> DS5
+    P5 --> DS1
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2>Data Flows Summary</h2>
+        <table>
+            <thead><tr><th>From</th><th>To</th><th>Data Flow</th></tr></thead>
+            <tbody>
+                <tr><td>Patient</td><td>System</td><td>Login, Register, Book, Cancel, Profile</td></tr>
+                <tr><td>Doctor</td><td>System</td><td>Login, Appointments, Time slots</td></tr>
+                <tr><td>Admin</td><td>System</td><td>Login, CRUD doctors/departments, View appointments, Manage users</td></tr>
+                <tr><td>System</td><td>Patient</td><td>Appointment list, Booking confirmation</td></tr>
+                <tr><td>System</td><td>Doctor</td><td>Appointment list, Patient details</td></tr>
+                <tr><td>System</td><td>Admin</td><td>All lists (doctors, patients, appointments, departments)</td></tr>
+            </tbody>
+        </table>
+    </section>
+    <p style="text-align:center;"><a href="/index.html">Back to App</a> &nbsp;|&nbsp; <a href="/ER-DIAGRAM.html">View ER Diagram</a></p>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });</script>
+</body>
+</html>
