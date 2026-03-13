@@ -3,241 +3,381 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Doctor Appointment Booking System</title>
+  <title>Hospital Appointment System | Book Doctor Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    .hero {
-      padding: 2rem 1rem 1.5rem;
+    .top-bar {
+      background: #0e7490;
+      color: #fff;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.875rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .top-bar a { color: #fff; text-decoration: none; font-weight: 500; }
+    .top-bar .cta-top {
+      background: #fff;
+      color: #0e7490;
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .main-header {
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .main-header .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0e7490;
+      letter-spacing: -0.02em;
+    }
+    .main-header nav {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+    .main-header nav a {
+      color: #334155;
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .main-header nav a:hover { background: #f0fdfa; color: #0e7490; text-decoration: none; }
+    .main-header .btn-book {
+      background: #0d9488;
+      color: #fff;
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .main-header .btn-book:hover { background: #0f766e; color: #fff; text-decoration: none; }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #0e7490 0%, #0d9488 50%, #14b8a6 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 3.5rem;
+      text-align: center;
+    }
+    .hero-banner h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .hero-banner p {
+      font-size: 1.05rem;
+      opacity: 0.95;
+      max-width: 560px;
+      margin: 0 auto 1.5rem;
+    }
+    .hero-banner .btn-hero {
+      display: inline-block;
+      background: #fff;
+      color: #0e7490;
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-banner .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); color: #0e7490; }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+      text-align: center;
       margin-bottom: 0.5rem;
     }
-    .hero-layout {
-      max-width: 980px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      gap: 2rem;
-      align-items: center;
+    .section-sub {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
     }
-    .hero .logo {
-      font-size: 2rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.35rem;
-    }
-    .hero .tagline {
-      color: var(--text-muted);
-      font-size: 1.02rem;
-      font-weight: 500;
-    }
-    .hero-text p {
-      margin-top: 0.4rem;
-    }
-    .hero-points {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-    .hero-points span {
-      display: inline-block;
-      margin-right: 0.5rem;
-      padding: 0.1rem 0.55rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-    }
-    .hero-graphic {
-      display: flex;
-      justify-content: center;
-    }
-    .hero-graphic img {
-      max-width: 320px;
-      width: 100%;
-      border-radius: 24px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
-      border: 4px solid rgba(255,255,255,0.9);
-    }
-    .auth-section {
+
+    #book-appointment { scroll-margin-top: 1rem; }
+    .auth-wrap {
       max-width: 440px;
-      margin: 0 auto 2rem;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
     }
     .auth-card {
       background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.2), 0 0 0 1px rgba(0,0,0,0.05);
-      padding: 2.5rem 2rem;
-      margin-bottom: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(14, 116, 144, 0.15);
+      padding: 2rem 1.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e2e8f0;
     }
-    .auth-card h1 {
-      font-size: 1.5rem;
+    .auth-card h2 {
+      font-size: 1.35rem;
       font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 0.25rem;
+      color: #0f172a;
       text-align: center;
+      margin-bottom: 0.25rem;
     }
     .auth-card .sub {
       text-align: center;
       font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
+      color: #64748b;
+      margin-bottom: 1.25rem;
     }
     .role-tabs {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
     .role-tabs button {
-      padding: 0.75rem;
+      padding: 0.65rem;
       border: 2px solid #e2e8f0;
       background: #f8fafc;
-      border-radius: 12px;
+      border-radius: 10px;
       font-weight: 600;
       font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.2s;
       color: #64748b;
     }
-    .role-tabs button:hover {
-      border-color: #c7d2fe;
-      background: #eef2ff;
-      color: #4f46e5;
-    }
+    .role-tabs button:hover { border-color: #99f6e4; background: #f0fdfa; color: #0d9488; }
     .role-tabs button.active {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      background: #0d9488;
       color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+      border-color: #0d9488;
     }
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-      margin: 1.25rem 0;
-    }
+    .divider { height: 1px; background: #e2e8f0; margin: 1rem 0; }
     .auth-card .btn-primary {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.7rem;
       font-size: 1rem;
-      border-radius: 12px;
-      margin-top: 0.25rem;
+      border-radius: 10px;
+      background: #0d9488;
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .auth-footer {
-      text-align: center;
+    .auth-card .btn-primary:hover { background: #0f766e; }
+    .auth-footer { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 1rem; }
+    .auth-footer a { font-weight: 600; color: #0d9488; }
+    .auth-footer a:hover { color: #0f766e; text-decoration: none; }
+
+    .specialities {
+      padding: 2.5rem 1.5rem;
+      background: #f8fafc;
+    }
+    .specialities .wrap { max-width: 900px; margin: 0 auto; }
+    .spec-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .spec-grid span {
+      background: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
       font-size: 0.9rem;
-      color: var(--text-muted);
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .why-section {
+      padding: 2.5rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
       margin-top: 1rem;
     }
-    .auth-footer a {
-      font-weight: 600;
-      color: #6366f1;
-    }
-    .auth-footer a:hover { color: #4f46e5; text-decoration: none; }
-    .diagram-links {
-      text-align: center;
+    .why-card {
+      background: #fff;
       padding: 1.25rem;
-      background: rgba(255,255,255,0.7);
-      border-radius: 16px;
-      margin-top: 1rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .why-card h3 { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.35rem; }
+    .why-card p { font-size: 0.9rem; color: #64748b; margin: 0; }
+
+    .stats-strip {
+      background: #0e7490;
+      color: #fff;
+      padding: 2rem 1.5rem;
+      margin: 2rem 0;
+    }
+    .stats-strip .wrap { max-width: 800px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; text-align: center; }
+    .stats-strip .num { font-size: 1.75rem; font-weight: 700; display: block; }
+    .stats-strip .lbl { font-size: 0.85rem; opacity: 0.9; }
+
+    .site-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2rem 1.5rem;
       font-size: 0.9rem;
-      color: var(--text-muted);
     }
-    .diagram-links a {
-      font-weight: 600;
-      margin: 0 0.5rem;
-    }
-    .index-footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .site-footer .wrap { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; }
+    .site-footer h4 { color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem; font-weight: 600; }
+    .site-footer a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 0.35rem; }
+    .site-footer a:hover { color: #fff; }
+    .site-footer .copy { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem; }
+
     #sessionExpiredMsg { display: none; }
     #sessionExpiredMsg:not(.hidden) { display: block; }
+    .diagram-links { text-align: center; margin-top: 1rem; font-size: 0.9rem; }
+    .diagram-links a { color: #0d9488; font-weight: 600; margin: 0 0.5rem; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Doctor Appointment Booking</h1>
+  <div class="top-bar">
+    <span>📞 Get in Touch</span>
+    <a href="#book-appointment" class="cta-top">Book an Appointment</a>
+  </div>
+
+  <header class="main-header">
+    <a href="/" class="brand">Hospital Appointment System</a>
     <nav>
+      <a href="#book-appointment">Book Appointment</a>
+      <a href="#specialities">Specialities</a>
       <a href="/ER-DIAGRAM.html">ER Diagram</a>
       <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
     </nav>
+    <a href="#book-appointment" class="btn-book">Book an Appointment</a>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-layout">
-        <div class="hero-text">
-          <div class="logo">Hospital Appointment System</div>
-          <p class="tagline">A simple web portal for admins, doctors and patients to manage online appointments.</p>
-          <p class="hero-points">
-            <span>Admin: manage doctors &amp; departments</span>
-            <span>Doctor: view &amp; update appointments</span>
-            <span>Patient: book &amp; track visits</span>
-          </p>
-        </div>
-        <div class="hero-graphic">
-          <img src="https://images.pexels.com/photos/6129052/pexels-photo-6129052.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Doctor consulting a patient">
-        </div>
+  <section class="hero-banner">
+    <h1>Book Your Doctor Appointment Online</h1>
+    <p>Choose your doctor by department, pick a convenient slot and manage your visits — all in one place.</p>
+    <a href="#book-appointment" class="btn-hero">Book an Appointment →</a>
+  </section>
+
+  <section id="book-appointment" class="auth-wrap">
+    <h2 class="section-title">Sign in to your account</h2>
+    <p class="section-sub">Select your role and sign in to book or manage appointments.</p>
+    <div id="sessionExpiredMsg" class="alert alert-info hidden">You were signed out. Please log in again.</div>
+
+    <div class="auth-card login-card">
+      <h2>Sign in</h2>
+      <p class="sub">Select your role and enter your credentials</p>
+      <div class="role-tabs">
+        <button type="button" data-role="ADMIN">Admin</button>
+        <button type="button" data-role="DOCTOR">Doctor</button>
+        <button type="button" data-role="PATIENT" class="active">Patient</button>
       </div>
-    </section>
+      <form id="loginForm">
+        <label for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" required placeholder="name@example.com" autocomplete="email">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+        <input type="hidden" id="loginRole" value="PATIENT">
+        <div id="loginError" class="alert alert-error hidden"></div>
+        <div class="divider"></div>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </form>
+      <p class="auth-footer">New patient? <a href="#" id="showRegister">Create an account</a></p>
+    </div>
 
-    <section class="auth-section">
-      <div id="sessionExpiredMsg" class="alert alert-info hidden">You were signed out. Please log in again.</div>
+    <div id="registerBox" class="auth-card hidden">
+      <h2>Create account</h2>
+      <p class="sub">Register as a patient to book appointments</p>
+      <form id="registerForm">
+        <label for="regName">Full name</label>
+        <input type="text" id="regName" required placeholder="John Doe" autocomplete="name">
+        <label for="regEmail">Email address</label>
+        <input type="email" id="regEmail" required placeholder="name@example.com" autocomplete="email">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" required placeholder="••••••••" autocomplete="new-password">
+        <label for="regPhone">Phone <span style="color:#94a3b8;font-weight:400;">(optional)</span></label>
+        <input type="tel" id="regPhone" placeholder="+91 98765 43210" autocomplete="tel">
+        <div id="registerError" class="alert alert-error hidden"></div>
+        <div id="registerSuccess" class="alert alert-success hidden"></div>
+        <div class="divider"></div>
+        <button type="submit" class="btn btn-primary">Create account</button>
+      </form>
+      <p class="auth-footer"><a href="#" id="showLogin">Back to sign in</a></p>
+    </div>
 
-      <div class="auth-card login-card">
-        <h1>Sign in</h1>
-        <p class="sub">Select your role and enter your credentials</p>
-        <div class="role-tabs">
-          <button type="button" data-role="ADMIN">Admin</button>
-          <button type="button" data-role="DOCTOR">Doctor</button>
-          <button type="button" data-role="PATIENT" class="active">Patient</button>
-        </div>
-        <form id="loginForm">
-          <label for="loginEmail">Email address</label>
-          <input type="email" id="loginEmail" required placeholder="name@example.com" autocomplete="email">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
-          <input type="hidden" id="loginRole" value="PATIENT">
-          <div id="loginError" class="alert alert-error hidden"></div>
-          <div class="divider"></div>
-          <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-        <p class="auth-footer">New patient? <a href="#" id="showRegister">Create an account</a></p>
+    <div class="diagram-links">Project diagrams: <a href="/ER-DIAGRAM.html">ER Diagram</a> · <a href="/DFD-DIAGRAM.html">DFD Diagram</a></div>
+  </section>
+
+  <section id="specialities" class="specialities">
+    <div class="wrap">
+      <h2 class="section-title">Our Specialities</h2>
+      <p class="section-sub">Find a doctor by department</p>
+      <div class="spec-grid">
+        <span>Cardiology</span>
+        <span>Dental</span>
+        <span>General Medicine</span>
+        <span>Neurology</span>
+        <span>Orthopedics</span>
+        <span>Pediatrics</span>
       </div>
+    </div>
+  </section>
 
-      <div id="registerBox" class="auth-card hidden">
-        <h1>Create account</h1>
-        <p class="sub">Register as a patient to book appointments</p>
-        <form id="registerForm">
-          <label for="regName">Full name</label>
-          <input type="text" id="regName" required placeholder="John Doe" autocomplete="name">
-          <label for="regEmail">Email address</label>
-          <input type="email" id="regEmail" required placeholder="name@example.com" autocomplete="email">
-          <label for="regPassword">Password</label>
-          <input type="password" id="regPassword" required placeholder="••••••••" autocomplete="new-password">
-          <label for="regPhone">Phone <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
-          <input type="tel" id="regPhone" placeholder="+1 234 567 8900" autocomplete="tel">
-          <div id="registerError" class="alert alert-error hidden"></div>
-          <div id="registerSuccess" class="alert alert-success hidden"></div>
-          <div class="divider"></div>
-          <button type="submit" class="btn btn-primary">Create account</button>
-        </form>
-        <p class="auth-footer"><a href="#" id="showLogin">Back to sign in</a></p>
+  <section class="why-section">
+    <h2 class="section-title">Why book with us</h2>
+    <p class="section-sub">Simple, secure and designed for patients and staff.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <h3>Easy booking</h3>
+        <p>Choose department, doctor and time in a few clicks.</p>
       </div>
-
-      <div class="diagram-links">
-        Project diagrams: <a href="/ER-DIAGRAM.html">ER Diagram</a> · <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
+      <div class="why-card">
+        <h3>One place for everything</h3>
+        <p>View and manage all your appointments in your account.</p>
       </div>
-    </section>
-  </main>
+      <div class="why-card">
+        <h3>For staff & patients</h3>
+        <p>Dedicated dashboards for admins, doctors and patients.</p>
+      </div>
+    </div>
+  </section>
 
-  <footer class="index-footer">
-    Online Doctor Appointment Booking System
+  <div class="stats-strip">
+    <div class="wrap">
+      <div><span class="num" id="statDoctors">—</span><span class="lbl">Doctors</span></div>
+      <div><span class="num" id="statDepts">—</span><span class="lbl">Departments</span></div>
+      <div><span class="num" id="statAppts">—</span><span class="lbl">Appointments</span></div>
+      <div><span class="num" id="statPatients">—</span><span class="lbl">Patients</span></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>
+        <h4>Quick links</h4>
+        <a href="#book-appointment">Book Appointment</a>
+        <a href="/ER-DIAGRAM.html">ER Diagram</a>
+        <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <span>Get in Touch</span>
+      </div>
+    </div>
+    <p class="copy">© Hospital Appointment System. All rights reserved.</p>
   </footer>
 
   <script src="/js/app.js"></script>
@@ -272,8 +412,6 @@
         updateLoginTexts(currentRole);
       });
     });
-
-    // Initial text for default role (Patient)
     updateLoginTexts(currentRole);
 
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
@@ -327,6 +465,12 @@
         errEl.classList.remove('hidden');
       }
     });
+
+    (function loadStats() {
+      fetch('/api/departments/list').then(function(r) { return r.json(); }).then(function(d) {
+        document.getElementById('statDepts').textContent = (d && d.length) ? d.length : '0';
+      }).catch(function() {});
+    })();
   </script>
 </body>
 </html>
