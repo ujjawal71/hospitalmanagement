@@ -1,0 +1,1902 @@
+ONLINE DOCTOR APPOINTMENT BOOKING SYSTEM
+COMPLETE PROJECT DETAILS DOCUMENT
+
+Document Type: Detailed Project Description
+Project Path: /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement
+Repository Type: Maven-based Spring Boot application
+Prepared For: Full project understanding and documentation
+Language Style: Hinglish technical documentation in plain text
+
+IMPORTANT NOTE
+This document ko intentionally bahut detail me likha gaya hai taaki project ka end-to-end samajh ek hi file me mil sake. Plain text file me exact "100 pages" ka measurement font size, editor width, line wrapping aur print settings par depend karta hai. Isliye content ko documentation-style maximum detail me organize kiya gaya hai, jisse practical sense me ek long-form project handbook mile.
+
+====================================================================
+1. PROJECT INTRODUCTION
+====================================================================
+
+Ye project ek Hospital Management aur Online Doctor Appointment Booking System hai jisme backend aur frontend dono same codebase ke andar maintain kiye gaye hain. Backend Java Spring Boot par based hai, database MySQL use karta hai, aur frontend static HTML, CSS aur JavaScript files ke through serve hota hai.
+
+Project ka main purpose ye hai:
+- Patients ko online appointment booking facility dena
+- Doctors ko apne appointments aur time slots manage karne dena
+- Admin ko departments, doctors, users aur appointments manage karne dena
+- Public visitors ko departments aur doctors ki listing dikhana
+
+Ye application monolithic style me designed hai, matlab backend business logic, security, REST APIs, static frontend, resource configuration aur persistence layer sab ek hi project ke andar hain.
+
+High-level system summary:
+- User browser me application open karta hai
+- Static frontend pages serve hote hain
+- JavaScript browser se REST APIs call karti hai
+- Spring Boot controllers requests receive karte hain
+- Service layer business logic execute karti hai
+- Repository layer MySQL database ke sath interact karti hai
+- Response wapas frontend ko milta hai
+- SessionStorage me auth token maintain hota hai
+
+====================================================================
+2. PROJECT PURPOSE AND BUSINESS PROBLEM
+====================================================================
+
+Hospital ya clinic environment me appointment booking traditionally manual hoti hai. Manual system me ye issues hote hain:
+- Phone-based booking par dependency
+- Doctor availability ko manually track karna padta hai
+- Patient records scattered ho sakte hain
+- Appointment status updates timely communicate nahi hote
+- Admin ke liye doctor aur department management cumbersome ho sakta hai
+
+Ye project in problems ko solve karne ki koshish karta hai by providing:
+- Self-service patient registration
+- Department-based doctor discovery
+- Appointment booking
+- Doctor-side approval and status tracking
+- Admin-side master data management
+- Browser-based role-specific dashboards
+
+Iska functional domain specifically doctor appointment scheduling hai, na ki full enterprise hospital ERP. Matlab billing, pharmacy, laboratory, inventory, bed allocation, insurance, prescriptions aur EMR jaise features is current version me visible nahi hain.
+
+====================================================================
+3. CORE BUSINESS OBJECTIVES
+====================================================================
+
+Project ke primary objectives:
+
+1. Ek simple web-based booking platform dena
+2. Multi-role access support karna: Admin, Doctor, Patient
+3. Department and doctor master management dena
+4. Appointment lifecycle track karna
+5. Doctors ke available slots maintain karna
+6. Frontend aur backend ko same deployment unit me rakhna
+7. Local setup ko easy banana through Spring Boot + MySQL
+
+Secondary objectives:
+- Demo-friendly default seed data provide karna
+- Low-complexity authentication flow dena
+- Simple navigation aur static pages ke sath lightweight UI dena
+- Educational ya academic project use case ko support karna
+
+====================================================================
+4. TECHNOLOGY STACK
+====================================================================
+
+Backend Technologies:
+- Java 17
+- Spring Boot 3.2.0
+- Spring Web
+- Spring Data JPA
+- Spring Security
+- Spring Validation
+
+Database:
+- MySQL
+- JDBC connection through mysql-connector-j
+
+Frontend:
+- HTML
+- CSS
+- JavaScript
+- Static resource serving through Spring Boot
+
+Build and Dependency Management:
+- Maven
+- Spring Boot Maven Plugin
+
+Application Packaging Style:
+- Single module Spring Boot application
+
+Observed from build configuration:
+- GroupId: com.hospital
+- ArtifactId: hospital-management
+- Version: 1.0.0
+- Application Name: Online Doctor Appointment Booking System
+
+What is NOT present:
+- No Gradle build
+- No Docker setup visible
+- No CI/CD pipeline config visible
+- No automated tests visible
+- No React/Angular/Vue frontend framework
+- No JWT or OAuth based auth visible
+
+====================================================================
+5. MAIN ENTRY POINTS
+====================================================================
+
+Backend application entry:
+- src/main/java/com/hospital/HospitalManagementApplication.java
+
+Application startup mechanism:
+- Standard SpringApplication.run(...) call
+
+Main web entry:
+- src/main/resources/static/index.html
+
+Root URL handling:
+- WebConfig class "/" ko forward karke index.html par bhejti hai
+
+Default runtime URL:
+- http://localhost:8080
+
+Expected startup flow:
+1. Spring Boot app start hota hai
+2. Datasource initialize hota hai
+3. JPA entities scan hoti hain
+4. Security filter chain register hoti hai
+5. DataInitializer run hota hai
+6. Static resources expose ho jate hain
+7. User browser se app access kar sakta hai
+
+====================================================================
+6. REPOSITORY AND DIRECTORY STRUCTURE
+====================================================================
+
+Root-level key files:
+- pom.xml
+- README.md
+
+Main source layout:
+- src/main/java/com/hospital/
+- src/main/resources/
+
+Java package structure:
+- config
+- controller
+- dto
+- entity
+- repository
+- service
+
+Resources structure:
+- application.properties
+- static/
+
+Static asset structure:
+- static/index.html
+- static/css/style.css
+- static/js/app.js
+- static/pages/
+- static/ER-DIAGRAM.html
+- static/DFD-DIAGRAM.html
+
+Role-specific pages:
+- Admin pages
+- Doctor pages
+- Patient pages
+
+Overall architecture view:
+- Presentation Layer: HTML/CSS/JS
+- Transport Layer: REST endpoints
+- Controller Layer: request handling
+- Service Layer: business logic
+- Repository Layer: persistence
+- Entity Layer: database mapping
+- Config Layer: security, CORS, startup seed, routing
+
+====================================================================
+7. PACKAGE-WISE DETAILED BREAKDOWN
+====================================================================
+
+7.1 config package
+
+Files:
+- AuthFilter.java
+- SecurityConfig.java
+- WebConfig.java
+- DataInitializer.java
+
+Responsibilities:
+- Request filtering and authorization checks
+- Spring Security configuration
+- Root URL forwarding
+- CORS configuration
+- Initial seed data creation
+
+7.2 controller package
+
+Files:
+- AuthController.java
+- AdminController.java
+- DoctorController.java
+- PatientController.java
+- PublicController.java
+
+Responsibilities:
+- API route exposure
+- Role-specific action handling
+- HTTP request to service layer delegation
+- Basic ownership and access validation
+
+7.3 service package
+
+Files:
+- AuthService.java
+- AppointmentService.java
+- DepartmentService.java
+- DoctorService.java
+- PatientService.java
+- TimeSlotService.java
+- TokenStore.java
+- AdminService.java
+
+Responsibilities:
+- Business rules implement karna
+- Entity to DTO mapping
+- Validation and duplicate checks
+- Token creation and storage
+- Appointment workflows manage karna
+
+7.4 repository package
+
+Files:
+- AdminRepository.java
+- AppointmentRepository.java
+- DepartmentRepository.java
+- DoctorRepository.java
+- PatientRepository.java
+- TimeSlotRepository.java
+
+Responsibilities:
+- Database CRUD access
+- Entity-specific queries
+- JPA abstraction provide karna
+
+7.5 entity package
+
+Files:
+- Admin.java
+- Appointment.java
+- Department.java
+- Doctor.java
+- Patient.java
+- TimeSlot.java
+
+Responsibilities:
+- Table mapping
+- Relationship definition
+- Domain data representation
+
+7.6 dto package
+
+Files:
+- AppointmentDTO.java
+- DepartmentDTO.java
+- DoctorCreateRequest.java
+- DoctorDTO.java
+- DoctorUpdateRequest.java
+- LoginRequest.java
+- LoginResponse.java
+- PatientDTO.java
+- TimeSlotDTO.java
+
+Responsibilities:
+- Request/response payload shaping
+- Sensitive field exposure ko limit karna
+- Frontend-friendly response format banana
+
+====================================================================
+8. BUILD CONFIGURATION DETAILS
+====================================================================
+
+Build file:
+- pom.xml
+
+Configured parent:
+- spring-boot-starter-parent 3.2.0
+
+Java version:
+- 17
+
+Declared dependencies:
+- spring-boot-starter-web
+- spring-boot-starter-data-jpa
+- spring-boot-starter-security
+- mysql-connector-j
+- spring-boot-starter-validation
+
+Build plugin:
+- spring-boot-maven-plugin
+
+Implication:
+- Project executable Spring Boot jar ke form me package ho sakta hai
+- REST APIs and static content ek sath serve honge
+- Validation annotations support available hai
+- Database ORM through JPA/Hibernate available hai
+
+====================================================================
+9. APPLICATION CONFIGURATION DETAILS
+====================================================================
+
+Configuration file:
+- src/main/resources/application.properties
+
+Important properties:
+- server.port=8080
+- spring.datasource.url=jdbc:mysql://localhost:3306/hospital_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+- spring.datasource.username=root
+- spring.datasource.password=
+- spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+- spring.jpa.hibernate.ddl-auto=update
+- spring.jpa.show-sql=true
+- spring.jpa.properties.hibernate.format_sql=true
+- spring.web.resources.static-locations=classpath:/static/,classpath:/templates/
+
+Meaning of these settings:
+
+Server Port:
+- Application default port 8080 par run karega
+
+Database URL:
+- Local MySQL instance expected hai
+- Database name hospital_db hai
+- createDatabaseIfNotExist=true se database auto-create attempt ho sakta hai
+
+DDL Auto Update:
+- Existing schema automatically update ho sakta hai
+- Development convenience ke liye useful hai
+- Production me carefully use karna chahiye
+
+Show SQL:
+- Console me executed SQL logs visible honge
+- Debugging aur learning ke liye useful
+
+Static Locations:
+- Spring Boot static web assets serve karega
+
+====================================================================
+10. DATA MODEL OVERVIEW
+====================================================================
+
+System me visible main entities:
+- Admin
+- Department
+- Patient
+- Doctor
+- Appointment
+- TimeSlot
+
+Relationship summary:
+- One Department ke multiple Doctors ho sakte hain
+- One Patient ke multiple Appointments ho sakte hain
+- One Doctor ke multiple Appointments ho sakte hain
+- One Doctor ke multiple TimeSlots ho sakte hain
+
+Functional meaning:
+- Department doctor categorization ka basis hai
+- Patient appointment create karta hai
+- Doctor appointment fulfill karta hai
+- TimeSlot doctor availability ko represent karta hai
+- Admin system master users aur departments manage karta hai
+
+====================================================================
+11. ENTITY-WISE DETAILED DESCRIPTION
+====================================================================
+
+11.1 Admin Entity
+
+Table:
+- admins
+
+Visible fields:
+- id
+- name
+- email
+- password
+
+Business purpose:
+- Administrative users jo system master operations perform karte hain
+
+Typical use cases:
+- Department create/update/delete
+- Doctor create/update/delete
+- Patient listing/update/delete
+- Appointment overview dekhna
+
+Observations:
+- Email likely unique login identifier hai
+- Password plain string ke roop me store hota dikhta hai
+
+11.2 Department Entity
+
+Table:
+- departments
+
+Visible fields:
+- id
+- name
+- description
+
+Business purpose:
+- Medical or hospital specialization categories maintain karna
+
+Examples seeded by app:
+- Cardiology
+- Dental
+- General Medicine
+- Neurology
+- Orthopedics
+- Pediatrics
+
+Role in system:
+- Doctor assignment ka logical grouping
+- Patient doctor search ka first-level filter
+
+11.3 Patient Entity
+
+Table:
+- patients
+
+Visible fields:
+- patient_id
+- name
+- email
+- password
+- phone
+
+Business purpose:
+- Registered end users jo appointments book karte hain
+
+Main behaviors:
+- Registration
+- Login
+- Appointment booking
+- Appointment cancellation
+- Profile update
+
+Observations:
+- Phone field stored hai
+- Password hashing visible nahi hai
+
+11.4 Doctor Entity
+
+Table:
+- doctors
+
+Visible fields:
+- doctor_id
+- name
+- email
+- password
+- department_id
+- specialization
+- availability
+
+Relationships:
+- Many-to-one with Department
+- One-to-many with Appointment
+- One-to-many with TimeSlot
+
+Business purpose:
+- Practicing doctors jinke sath appointments schedule hoti hain
+
+Stored descriptive information:
+- Name
+- Email
+- Specialization
+- Availability text
+- Linked department
+
+11.5 Appointment Entity
+
+Table:
+- appointments
+
+Visible fields:
+- appointment_id
+- patient_id
+- doctor_id
+- date
+- time
+- status
+
+Status enum values:
+- PENDING
+- APPROVED
+- COMPLETED
+- CANCELLED
+
+Business purpose:
+- Patient-doctor consultation request aur lifecycle state ko store karna
+
+Lifecycle concept:
+- Patient book karta hai
+- Appointment initial PENDING hota hai
+- Doctor usko APPROVED/COMPLETED/CANCELLED me move kar sakta hai
+- Patient cancellation bhi available hai
+
+11.6 TimeSlot Entity
+
+Table:
+- time_slots
+
+Visible fields:
+- id
+- doctor_id
+- slotDate
+- startTime
+- endTime
+- available
+
+Business purpose:
+- Doctor availability windows represent karna
+
+Important observation:
+- TimeSlot system exist karta hai, lekin booking service visible code ke hisab se slot validation enforce nahi karti
+
+====================================================================
+12. DATABASE RELATIONSHIPS EXPLAINED
+====================================================================
+
+Department to Doctor:
+- Ek department ke multiple doctors ho sakte hain
+- Example: Cardiology department me multiple cardiologists ho sakte hain
+
+Patient to Appointment:
+- Ek patient multiple appointments book kar sakta hai
+- Har appointment ek patient se linked hota hai
+
+Doctor to Appointment:
+- Ek doctor ke multiple appointments ho sakte hain
+- Appointment se doctor ka schedule visible hota hai
+
+Doctor to TimeSlot:
+- Ek doctor multiple available slots define kar sakta hai
+- TimeSlot doctor calendar abstraction ka simple version hai
+
+Database normalization level:
+- Basic relational normalization visible hai
+- Separate tables for users, departments, appointments and slots
+- Reusable department master maintained hai
+
+====================================================================
+13. AUTHENTICATION AND AUTHORIZATION MODEL
+====================================================================
+
+Authentication approach:
+- Custom token-based authentication
+- Not JWT
+- Not session cookie based
+
+Header used:
+- X-Auth-Token
+
+Token storage:
+- In-memory token store
+
+Token generation:
+- UUID-based token generation visible
+
+Authentication flow:
+1. User login request send karta hai with email, password, role
+2. AuthService repository me matching user search karta hai
+3. Password simple equals comparison se verify hota hai
+4. TokenStore token generate karta hai
+5. Login response me token, role, userId aur name bheja jata hai
+6. Frontend sessionStorage me token store karta hai
+7. Subsequent API requests me same token header ke through bheja jata hai
+
+Authorization flow:
+1. AuthFilter har protected API request intercept karta hai
+2. Public paths bypass ho jate hain
+3. Missing token par 401 response milta hai
+4. Invalid token par 401 response milta hai
+5. Wrong role par 403 response milta hai
+6. Valid token par userId aur userRole request attribute me set hote hain
+
+Role restriction mapping:
+- /api/admin/** => ADMIN
+- /api/doctor/** => DOCTOR
+- /api/patient/** => PATIENT
+
+Public routes:
+- /api/auth/login
+- /api/auth/register
+- /api/departments/list
+- /api/doctors/by-department
+- /index.html
+- /
+- /css/
+- /js/
+- /pages/
+
+Security design summary:
+- Spring Security framework present hai
+- But actual authorization largely custom filter ke through implement hai
+- SecurityConfig anyRequest().permitAll() use karta hai
+- Custom AuthFilter practical guard ka kaam karta hai
+
+====================================================================
+14. SECURITY STRENGTHS AND WEAKNESSES
+====================================================================
+
+Strengths:
+- Role-based route separation hai
+- Unauthorized request reject hoti hai
+- Token header-based simple auth implement hai
+- Session stateless configuration use hoti hai
+- Public aur protected paths separated hain
+
+Weaknesses:
+- Password hashing visible nahi hai
+- Tokens in-memory hain, restart par invalidate ho jayenge
+- Multi-instance deployment me token sharing issue hoga
+- anyRequest().permitAll() ke karan framework-level authorization strict nahi hai
+- Token expiration policy visible nahi hai
+- Audit logging visible nahi hai
+- Rate limiting visible nahi hai
+- Brute-force protection visible nahi hai
+
+Practical implication:
+- Ye setup demo, academic ya small local project ke liye okay ho sakta hai
+- Production-grade security ke liye significant improvements chahiye honge
+
+====================================================================
+15. WEB CONFIGURATION DETAILS
+====================================================================
+
+WebConfig responsibilities:
+- CORS mapping define karna
+- Root path ko index.html par forward karna
+
+CORS settings:
+- /api/** routes mapped
+- allowedOrigins includes http://localhost:8080 and "null"
+- allowedMethods: GET, POST, PUT, DELETE, OPTIONS
+- allowedHeaders: *
+- allowCredentials: false
+
+Meaning:
+- Local frontend-to-backend interaction support ki gayi hai
+- Since frontend same origin se serve hota hai, CORS complexity limited hai
+
+====================================================================
+16. DATA INITIALIZATION DETAILS
+====================================================================
+
+DataInitializer startup par run hota hai aur initial data create karta hai.
+
+Seeded departments:
+- Cardiology
+- Dental
+- General Medicine
+- Neurology
+- Orthopedics
+- Pediatrics
+
+Seeded admin:
+- Name: System Admin
+- Email: admin@hospital.com
+- Password: admin123
+
+Seeded doctor:
+- Name: Dr. John Smith
+- Email: doctor@hospital.com
+- Password: doctor123
+- Department: first available department
+- Specialization: General Physician
+- Availability: Mon-Fri 9:00-17:00
+
+Business value:
+- First run ke baad demo use immediately possible ho jata hai
+- Manual seeding ki zarurat kam ho jati hai
+
+Risk:
+- Default credentials production me dangerous ho sakte hain
+
+====================================================================
+17. ROLE-BASED FUNCTIONAL ANALYSIS
+====================================================================
+
+17.1 Admin Role
+
+Admin ka system-level scope sabse wide hai.
+
+Admin can:
+- View all departments
+- Create department
+- Update department
+- Delete department
+- View all doctors
+- Create doctor
+- Update doctor
+- Delete doctor
+- View all patients
+- Update patient
+- Delete patient
+- View all appointments
+
+Admin cannot visibly do:
+- Direct billing management
+- Time slot management
+- Reports export
+- Prescription management
+
+17.2 Doctor Role
+
+Doctor ka focus appointment handling aur schedule management par hai.
+
+Doctor can:
+- View own appointments
+- Update appointment status
+- View patient details for assigned appointment
+- View own time slots
+- Add time slot
+- Delete own time slot
+
+Doctor appointment statuses allowed:
+- APPROVED
+- COMPLETED
+- CANCELLED
+
+Doctor ownership enforcement:
+- Doctor sirf apne hi appointment ka status update kar sakta hai
+- Doctor sirf apne hi appointment ka patient detail dekh sakta hai
+- Doctor sirf apna hi slot delete kar sakta hai
+
+17.3 Patient Role
+
+Patient ka scope self-service actions par based hai.
+
+Patient can:
+- Register
+- Login
+- View departments
+- View doctors by department
+- Book appointment
+- View own appointments
+- Cancel own appointment
+- View own profile
+- Update own profile
+
+Patient ownership enforcement:
+- Cancellation ke time patientId compare hota hai
+- Profile own account ke basis par load hoti hai
+
+17.4 Public User
+
+Public user bina login ke:
+- Department list dekh sakta hai
+- Department ke basis par doctors dekh sakta hai
+
+Public user cannot:
+- Appointment book
+- User profile access
+- Protected dashboards access
+
+====================================================================
+18. API CATALOG
+====================================================================
+
+18.1 Auth API
+
+Base path:
+- /api/auth
+
+Endpoints:
+- POST /login
+- POST /register
+- POST /logout
+
+Login expected data:
+- email
+- password
+- role
+
+Login response visible fields:
+- success
+- message
+- role
+- userId
+- name
+- token
+
+Register behavior:
+- Patient entity directly accept ki jati hai
+- Duplicate email check hota hai
+
+Logout behavior:
+- Header token remove kar diya jata hai from token store
+
+18.2 Admin API
+
+Base path:
+- /api/admin
+
+Department endpoints:
+- GET /departments
+- POST /departments
+- PUT /departments/{id}
+- DELETE /departments/{id}
+
+Doctor endpoints:
+- GET /doctors
+- POST /doctors
+- PUT /doctors/{id}
+- DELETE /doctors/{id}
+
+Patient endpoints:
+- GET /patients
+- PUT /patients/{id}
+- DELETE /patients/{id}
+
+Appointment endpoints:
+- GET /appointments
+
+18.3 Doctor API
+
+Base path:
+- /api/doctor
+
+Endpoints:
+- GET /appointments
+- PUT /appointments/{id}/status?status=
+- GET /appointments/{id}/patient
+- GET /time-slots
+- POST /time-slots
+- DELETE /time-slots/{id}
+
+Time slot POST query parameters:
+- slotDate
+- startTime
+- endTime
+
+18.4 Patient API
+
+Base path:
+- /api/patient
+
+Endpoints:
+- GET /departments
+- GET /doctors/by-department/{departmentId}
+- POST /appointments
+- GET /appointments
+- DELETE /appointments/{id}
+- GET /profile
+- PUT /profile
+
+Appointment booking parameters:
+- doctorId
+- date
+- time
+
+18.5 Public API
+
+Base path:
+- /api
+
+Endpoints:
+- GET /departments/list
+- GET /doctors/by-department?departmentId=
+
+====================================================================
+19. CONTROLLER-WISE ANALYSIS
+====================================================================
+
+19.1 AuthController
+
+Purpose:
+- Authentication related entry points expose karna
+
+Main actions:
+- Login request delegate to AuthService
+- Register request delegate to PatientService
+- Logout request delegate to AuthService
+
+Design note:
+- Register patient entity direct accept karta hai, yani dedicated register DTO visible nahi hai
+
+19.2 AdminController
+
+Purpose:
+- Admin-specific management operations expose karna
+
+Characteristics:
+- Department CRUD
+- Doctor CRUD
+- Patient management
+- Appointment list access
+
+Interesting detail:
+- Doctor create/update ke liye dedicated request DTOs use kiye gaye hain
+- getAdminId helper present hai but visible methods me actively use nahi hota
+
+19.3 DoctorController
+
+Purpose:
+- Doctor-side appointment aur slot handling provide karna
+
+Important validations:
+- Appointment ownership check
+- Allowed status transitions check subset
+- Slot ownership check
+
+Design note:
+- Patient detail fetch appointment ke through indirect authorization use karta hai
+
+19.4 PatientController
+
+Purpose:
+- Patient-facing discovery, booking, profile and appointment actions expose karna
+
+Important validations:
+- Request se patientId extract hota hai
+- Cancellation service me ownership check hota hai
+
+Design note:
+- Booking query params based hai, request body based nahi
+
+19.5 PublicController
+
+Purpose:
+- Login-free discovery APIs dena
+
+Value:
+- Front page experience aur doctor browsing ko support karta hai
+
+====================================================================
+20. SERVICE LAYER DEEP DIVE
+====================================================================
+
+20.1 AuthService
+
+Main responsibility:
+- Role-wise login perform karna
+
+How it works:
+- Role uppercase me convert hota hai
+- Role ke hisab se specific repository hit hoti hai
+- Password string equality se compare hota hai
+- Success par token generate hota hai
+- Response me role and user identity return hoti hai
+
+Critical observation:
+- Password encoder use visible nahi hai
+
+20.2 AppointmentService
+
+Main responsibilities:
+- All appointments list
+- Patient appointments list
+- Doctor appointments list
+- Appointment fetch by ID
+- Book appointment
+- Update appointment status
+- Cancel appointment
+- DTO mapping
+
+Booking logic:
+- Patient existence verify
+- Doctor existence verify
+- Appointment entity create
+- Date and time set
+- Initial status PENDING
+
+Missing validations visible in service:
+- Duplicate same-slot booking check visible nahi
+- Time slot availability consumption visible nahi
+- Past date restriction visible nahi
+- Doctor working hour validation visible nahi
+
+20.3 DoctorService
+
+Main responsibilities:
+- Doctors list
+- Doctors by department
+- Doctor find by id
+- Doctor create
+- Doctor update
+- Doctor delete
+
+Validations:
+- Email uniqueness check
+- Department existence check
+
+DTO output includes:
+- doctorId
+- name
+- email
+- departmentId
+- departmentName
+- specialization
+- availability
+
+20.4 PatientService
+
+Main responsibilities:
+- Patient list
+- Patient find
+- Register
+- Update
+- Delete
+
+Validations:
+- Duplicate email check
+
+Note:
+- Password change allowed if non-blank updates input me aaye
+
+20.5 DepartmentService
+
+Main responsibilities:
+- Department list
+- Department find
+- Department create
+- Department update
+- Department delete
+
+Validations:
+- Create ke time duplicate department name check
+
+Potential issue:
+- Update ke time duplicate name handling visible nahi
+
+20.6 TimeSlotService
+
+Main responsibilities:
+- Doctor slots list
+- Slot find
+- Available slots by doctor and date
+- Slot create
+- Slot delete
+
+Important observation:
+- Available slots lookup method exist karta hai
+- But patient booking path me direct slot consumption visible nahi
+
+20.7 TokenStore
+
+Summary based on observed usage:
+- Token create karta hai
+- TokenInfo return karta hai
+- Token remove karta hai
+- In-memory auth session registry ka role play karta hai
+
+Implication:
+- App restart hone par active sessions lost ho jayengi
+
+====================================================================
+21. REPOSITORY LAYER ANALYSIS
+====================================================================
+
+AdminRepository:
+- Admin lookup ke liye likely email-based queries support karta hai
+
+DoctorRepository:
+- Email lookup
+- Department-based lookup
+- Existence checks
+
+PatientRepository:
+- Email lookup
+- Existence checks
+
+DepartmentRepository:
+- Name uniqueness related lookup
+
+AppointmentRepository:
+- Patient-based appointment lookup
+- Doctor-based appointment lookup
+
+TimeSlotRepository:
+- Doctor-based slot lookup
+- Doctor + date + availability lookup
+
+Repository layer ka design simple aur standard Spring Data JPA style ka lagta hai. Ye maintainability ke point of view se accha hai kyunki boilerplate SQL kam hota hai aur service layer readable rehti hai.
+
+====================================================================
+22. DTO LAYER ANALYSIS
+====================================================================
+
+AppointmentDTO:
+- Appointment view data ke liye
+- Patient and doctor names include karta hoga
+- Department name bhi include hota hai
+
+DepartmentDTO:
+- Department id, name, description
+
+DoctorDTO:
+- Doctor identity aur department info ke sath response DTO
+
+DoctorCreateRequest:
+- Doctor create payload structure
+
+DoctorUpdateRequest:
+- Doctor update payload structure
+
+LoginRequest:
+- Email, password, role
+
+LoginResponse:
+- Success state, message, role, userId, name, token
+
+PatientDTO:
+- Patient output without exposing sensitive unnecessary data
+
+TimeSlotDTO:
+- Slot metadata for doctor schedule display
+
+DTO layer ka benefit:
+- Entities directly expose karne ki zarurat kam hoti hai
+- Response formatting cleaner hota hai
+- UI-friendly payload milta hai
+
+====================================================================
+23. FRONTEND OVERVIEW
+====================================================================
+
+Frontend static assets me built hai. Koi SPA framework visible nahi hai. Iska matlab pages mostly multi-page static HTML pattern follow karte hain.
+
+Shared frontend files:
+- index.html
+- css/style.css
+- js/app.js
+
+Role-specific pages:
+
+Admin:
+- admin-dashboard.html
+- admin-departments.html
+- admin-doctors.html
+- admin-users.html
+- admin-appointments.html
+
+Doctor:
+- doctor-dashboard.html
+- doctor-appointments.html
+- doctor-timeslots.html
+
+Patient:
+- patient-dashboard.html
+- patient-book.html
+- patient-appointments.html
+- patient-profile.html
+
+Additional documentation pages:
+- ER-DIAGRAM.html
+- DFD-DIAGRAM.html
+
+Frontend style pattern:
+- Static page layouts
+- Shared JS utility file
+- Fetch-based API calls
+- sessionStorage-driven auth state
+
+====================================================================
+24. FRONTEND AUTH AND NAVIGATION LOGIC
+====================================================================
+
+Main frontend auth behavior app.js me visible hai.
+
+Key helper functions:
+- getToken()
+- getRole()
+- getUserId()
+- getUserName()
+- setAuth(...)
+- clearAuth()
+- authHeaders()
+- api(...)
+- apiGet(...)
+- apiPost(...)
+- apiPut(...)
+- apiDelete(...)
+- login(...)
+- register(...)
+- redirectByRole()
+- requireAuth(...)
+- formatDate(...)
+- formatTime(...)
+
+How frontend auth works:
+- Login success par token, role, userId, userName sessionStorage me store hote hain
+- Har API request me X-Auth-Token header automatically inject hota hai
+- Role-based redirect dashboards ke liye use hota hai
+- requireAuth function unauthorized users ko index.html par bhej deti hai
+
+Advantages:
+- Simple to understand
+- No extra auth library needed
+- Static frontend ke sath compatible
+
+Limitations:
+- Browser storage-based token theft risk
+- Token expiry handling visible nahi
+- Refresh behavior simplistic hai
+
+====================================================================
+25. PAGE-WISE FUNCTIONAL EXPECTATIONS
+====================================================================
+
+25.1 index.html
+
+Expected role:
+- Landing page
+- Login and/or registration access point
+- Public listing integration likely yahin hoti hogi
+
+25.2 admin-dashboard.html
+
+Expected purpose:
+- Admin home screen
+- Quick navigation to departments, doctors, users, appointments
+
+25.3 admin-departments.html
+
+Expected purpose:
+- Department list
+- Create/update/delete department actions
+
+25.4 admin-doctors.html
+
+Expected purpose:
+- Doctor management
+- Add, edit, delete doctors
+- Department selection integration
+
+25.5 admin-users.html
+
+Expected purpose:
+- Patient list and management
+
+25.6 admin-appointments.html
+
+Expected purpose:
+- All system appointments dekhna
+
+25.7 doctor-dashboard.html
+
+Expected purpose:
+- Doctor quick access landing
+
+25.8 doctor-appointments.html
+
+Expected purpose:
+- Assigned appointments list
+- Status update actions
+- Patient detail viewing
+
+25.9 doctor-timeslots.html
+
+Expected purpose:
+- Slot create and delete
+- Availability overview
+
+25.10 patient-dashboard.html
+
+Expected purpose:
+- Patient navigation home
+
+25.11 patient-book.html
+
+Expected purpose:
+- Department select
+- Doctor list fetch
+- Appointment date/time selection
+- Booking action
+
+25.12 patient-appointments.html
+
+Expected purpose:
+- Patient ke current aur past appointments
+- Cancel option
+
+25.13 patient-profile.html
+
+Expected purpose:
+- Profile details display
+- Self update form
+
+====================================================================
+26. DIAGRAM FILES
+====================================================================
+
+Visible static diagram documents:
+- ER-DIAGRAM.html
+- DFD-DIAGRAM.html
+
+ER Diagram file observations:
+- Mermaid library use hoti hai
+- Styled presentation page hai
+- Entities and relationships visually rendered hain
+- Back to app navigation present hai
+- DFD diagram page par link present hai
+
+ER diagram represented entities:
+- ADMIN
+- DEPARTMENT
+- PATIENT
+- DOCTOR
+- APPOINTMENT
+- TIME_SLOT
+
+Documentation mismatch observed:
+- README docs/ER-DIAGRAM.md aur docs/DFD-DIAGRAM.md mention karta hai
+- Actual visible files static HTML versions hain
+
+====================================================================
+27. END-TO-END USER FLOWS
+====================================================================
+
+27.1 Public Browse Flow
+
+1. User application open karta hai
+2. Public departments API hit hoti hai
+3. User department choose karta hai
+4. Doctors-by-department list visible hoti hai
+5. Further action ke liye login/register required hota hai
+
+27.2 Patient Registration Flow
+
+1. New patient register form fill karta hai
+2. Register API call hoti hai
+3. Backend duplicate email check karta hai
+4. Patient database me save hota hai
+5. User phir login kar sakta hai
+
+27.3 Login Flow
+
+1. User email/password/role select karta hai
+2. Login API call hoti hai
+3. Backend repository-based credential lookup karta hai
+4. Successful authentication par token return hota hai
+5. Frontend token and role sessionStorage me save karta hai
+6. User role-specific dashboard par redirect hota hai
+
+27.4 Patient Booking Flow
+
+1. Patient login karta hai
+2. Patient departments fetch karta hai
+3. Selected department ke doctors load hote hain
+4. Patient doctor, date, time choose karta hai
+5. Booking API POST hoti hai
+6. Backend patient and doctor existence verify karta hai
+7. Appointment PENDING status ke sath save hoti hai
+8. Patient appointment list me booking visible ho jati hai
+
+27.5 Doctor Appointment Handling Flow
+
+1. Doctor login karta hai
+2. Doctor apne appointments fetch karta hai
+3. Doctor specific appointment select karta hai
+4. Doctor status update karta hai
+5. Ownership verify hoti hai
+6. Status APPROVED/COMPLETED/CANCELLED me set hota hai
+
+27.6 Doctor Patient Detail Flow
+
+1. Doctor assigned appointment select karta hai
+2. Patient detail API call hoti hai
+3. Appointment ownership validate hoti hai
+4. PatientDTO return hota hai
+
+27.7 Doctor Time Slot Flow
+
+1. Doctor login karta hai
+2. Existing time slots fetch hote hain
+3. Doctor new slot create karta hai
+4. Slot available=true ke sath save hota hai
+5. Doctor unnecessary slot delete bhi kar sakta hai
+
+27.8 Patient Cancellation Flow
+
+1. Patient own appointment list dekhta hai
+2. Cancel action choose karta hai
+3. Backend appointment ownership check karta hai
+4. Appointment delete nahi hoti
+5. Status CANCELLED set hota hai
+
+27.9 Admin Master Data Flow
+
+1. Admin login karta hai
+2. Departments and doctors manage karta hai
+3. Patients list monitor karta hai
+4. Appointments ka complete overview dekh sakta hai
+
+====================================================================
+28. APPOINTMENT LIFECYCLE ANALYSIS
+====================================================================
+
+Initial creation:
+- PENDING
+
+Doctor action possible:
+- APPROVED
+- COMPLETED
+- CANCELLED
+
+Patient cancellation:
+- CANCELLED
+
+Observed lifecycle strengths:
+- Simple and understandable state model
+- Hospital scheduling demo ke liye sufficient
+
+Observed lifecycle limitations:
+- Rescheduled state nahi hai
+- No check-in state nahi
+- No no-show state nahi
+- No reason for cancellation field visible nahi
+- No appointment notes visible nahi
+
+====================================================================
+29. TIME SLOT MODEL ANALYSIS
+====================================================================
+
+Time slot subsystem ke features:
+- Doctor by slot listing
+- Date-specific availability query method
+- Slot creation
+- Slot deletion
+- Available boolean field
+
+Potential intended use:
+- Doctor schedule define karna
+- Future booking validation ke liye base create karna
+
+Current observed limitation:
+- Patient booking route direct appointment create karta hai
+- Available slot lock/consume logic visible nahi
+- Overbooking possibility theoretically exist kar sakti hai
+
+====================================================================
+30. VALIDATION AND DATA INTEGRITY OBSERVATIONS
+====================================================================
+
+Visible validations:
+- Duplicate email check for patient register
+- Duplicate email check for doctor create/update
+- Duplicate department name check on create
+- Doctor appointment ownership check
+- Doctor slot ownership check
+- Patient cancellation ownership check
+- Patient/doctor existence checks in booking
+
+Validation gaps visible:
+- Password strength validation visible nahi
+- Phone format validation visible nahi
+- Email format enforcement clearly visible nahi
+- Appointment date in past restriction visible nahi
+- Same doctor same time collision prevention visible nahi
+- Department update duplicate-name protection visible nahi
+- Time slot overlap validation visible nahi
+
+====================================================================
+31. ERROR HANDLING CHARACTERISTICS
+====================================================================
+
+Observed style:
+- RuntimeException based simple failure handling
+- Filter level par JSON error responses return hote hain for auth issues
+- Controllers sometimes ResponseEntity status return karte hain
+
+Likely behavior:
+- Some business exceptions generic 500 me convert ho sakte hain agar global exception handler absent ho
+
+Missing centralized concerns:
+- Global exception handler visible nahi
+- Standard error response schema visible nahi
+- Error codes taxonomy visible nahi
+
+====================================================================
+32. SCALABILITY AND MAINTAINABILITY ANALYSIS
+====================================================================
+
+What is good:
+- Layered architecture clear hai
+- Role-based separation readable hai
+- DTO usage code ko cleaner banata hai
+- Standard Spring Boot conventions follow ho rahe hain
+- Small-to-medium academic project ke liye maintainable structure hai
+
+What may become difficult at scale:
+- In-memory token store
+- Plain password handling
+- Static multi-page HTML maintainability
+- Limited validation
+- No test suite
+- No audit or logging framework details
+
+For small team or student project:
+- Structure understandable hai
+- Setup simple hai
+- Debugging manageable hai
+
+====================================================================
+33. TESTING STATUS
+====================================================================
+
+Observed testing situation:
+- src/test directory visible nahi
+- Automated unit tests visible nahi
+- Integration tests visible nahi
+- End-to-end UI tests visible nahi
+- CI pipeline visible nahi
+
+Implications:
+- Regression risk higher hai
+- Manual testing par dependency hogi
+- Refactoring confidence lower hoga
+
+Recommended test coverage areas:
+- AuthService login
+- Appointment booking rules
+- Doctor ownership checks
+- Patient cancellation authorization
+- Department duplicate validation
+- Doctor email uniqueness
+
+====================================================================
+34. DEPLOYMENT AND RUNNING INSTRUCTIONS
+====================================================================
+
+Prerequisites:
+- JDK 17+
+- Maven 3.6+
+- MySQL 8 or compatible
+
+Setup steps:
+1. MySQL run karo
+2. Ensure local DB access available ho
+3. application.properties me username/password configure karo
+4. Maven se application run karo
+
+Run command:
+- mvn spring-boot:run
+
+Access URLs:
+- http://localhost:8080
+- http://localhost:8080/index.html
+
+Default accounts:
+- Admin: admin@hospital.com / admin123
+- Doctor: doctor@hospital.com / doctor123
+- Patient: UI se register karna hoga
+
+====================================================================
+35. FRONTEND-BACKEND INTEGRATION MODEL
+====================================================================
+
+Integration style:
+- Same-origin serving
+- Fetch API based async communication
+- JSON request/response
+- Custom header authentication
+
+Request path pattern:
+- Frontend -> /api/... REST call
+- Backend controller -> service
+- Service -> repository
+- Repository -> MySQL
+- Response -> browser UI update
+
+Benefits:
+- Simple deployment
+- No separate frontend server needed
+- Easy local development
+
+====================================================================
+36. PRODUCTION READINESS ASSESSMENT
+====================================================================
+
+Current state ko dekhte hue application educational/demo-friendly lagti hai.
+
+Production strengths:
+- Clear modular structure
+- Role separation
+- Basic CRUD and workflow support
+
+Production blockers or major concerns:
+- Plain text passwords
+- In-memory auth tokens
+- No explicit token expiry policy
+- No robust validation
+- No formal logging/auditing
+- No tests
+- No monitoring setup
+- No backup/migration strategy visible
+
+Conclusion:
+- Prototype / academic project / demo solution ke liye suitable
+- Enterprise production ke liye hardening required
+
+====================================================================
+37. MAJOR RISKS AND LIMITATIONS
+====================================================================
+
+Risk 1:
+- Passwords plain format me appear hote hain
+
+Risk 2:
+- Token store restart-safe nahi hai
+
+Risk 3:
+- Appointment slot conflict prevention clearly visible nahi
+
+Risk 4:
+- No automated tests
+
+Risk 5:
+- Exception handling centralized nahi lagti
+
+Risk 6:
+- Time slot module aur booking module fully integrated nahi lagte
+
+Risk 7:
+- Static multi-page frontend me code duplication ka chance hota hai
+
+====================================================================
+38. NOTABLE DESIGN DECISIONS
+====================================================================
+
+Decision 1:
+- Frontend and backend same project me host kiye gaye hain
+
+Decision 2:
+- Role-based API segmentation use ki gayi hai
+
+Decision 3:
+- Custom auth token model choose kiya gaya hai
+
+Decision 4:
+- DTO mapping for response shaping use ki gayi hai
+
+Decision 5:
+- Startup seed data provide kiya gaya hai
+
+Decision 6:
+- Static HTML interface choose ki gayi hai instead of heavy frontend framework
+
+====================================================================
+39. FILE INVENTORY SUMMARY
+====================================================================
+
+Important backend files:
+- src/main/java/com/hospital/HospitalManagementApplication.java
+- src/main/java/com/hospital/config/AuthFilter.java
+- src/main/java/com/hospital/config/SecurityConfig.java
+- src/main/java/com/hospital/config/WebConfig.java
+- src/main/java/com/hospital/config/DataInitializer.java
+- src/main/java/com/hospital/controller/AuthController.java
+- src/main/java/com/hospital/controller/AdminController.java
+- src/main/java/com/hospital/controller/DoctorController.java
+- src/main/java/com/hospital/controller/PatientController.java
+- src/main/java/com/hospital/controller/PublicController.java
+- src/main/java/com/hospital/service/AuthService.java
+- src/main/java/com/hospital/service/AppointmentService.java
+- src/main/java/com/hospital/service/DepartmentService.java
+- src/main/java/com/hospital/service/DoctorService.java
+- src/main/java/com/hospital/service/PatientService.java
+- src/main/java/com/hospital/service/TimeSlotService.java
+- src/main/java/com/hospital/service/TokenStore.java
+- src/main/java/com/hospital/service/AdminService.java
+- src/main/java/com/hospital/repository/AdminRepository.java
+- src/main/java/com/hospital/repository/AppointmentRepository.java
+- src/main/java/com/hospital/repository/DepartmentRepository.java
+- src/main/java/com/hospital/repository/DoctorRepository.java
+- src/main/java/com/hospital/repository/PatientRepository.java
+- src/main/java/com/hospital/repository/TimeSlotRepository.java
+- src/main/java/com/hospital/entity/Admin.java
+- src/main/java/com/hospital/entity/Appointment.java
+- src/main/java/com/hospital/entity/Department.java
+- src/main/java/com/hospital/entity/Doctor.java
+- src/main/java/com/hospital/entity/Patient.java
+- src/main/java/com/hospital/entity/TimeSlot.java
+- src/main/java/com/hospital/dto/AppointmentDTO.java
+- src/main/java/com/hospital/dto/DepartmentDTO.java
+- src/main/java/com/hospital/dto/DoctorCreateRequest.java
+- src/main/java/com/hospital/dto/DoctorDTO.java
+- src/main/java/com/hospital/dto/DoctorUpdateRequest.java
+- src/main/java/com/hospital/dto/LoginRequest.java
+- src/main/java/com/hospital/dto/LoginResponse.java
+- src/main/java/com/hospital/dto/PatientDTO.java
+- src/main/java/com/hospital/dto/TimeSlotDTO.java
+
+Important frontend files:
+- src/main/resources/static/index.html
+- src/main/resources/static/css/style.css
+- src/main/resources/static/js/app.js
+- src/main/resources/static/pages/admin-dashboard.html
+- src/main/resources/static/pages/admin-departments.html
+- src/main/resources/static/pages/admin-doctors.html
+- src/main/resources/static/pages/admin-users.html
+- src/main/resources/static/pages/admin-appointments.html
+- src/main/resources/static/pages/doctor-dashboard.html
+- src/main/resources/static/pages/doctor-appointments.html
+- src/main/resources/static/pages/doctor-timeslots.html
+- src/main/resources/static/pages/patient-dashboard.html
+- src/main/resources/static/pages/patient-book.html
+- src/main/resources/static/pages/patient-appointments.html
+- src/main/resources/static/pages/patient-profile.html
+- src/main/resources/static/ER-DIAGRAM.html
+- src/main/resources/static/DFD-DIAGRAM.html
+- src/main/resources/application.properties
+
+====================================================================
+40. REQUIREMENTS PERSPECTIVE
+====================================================================
+
+Functional requirements satisfied by visible code:
+- User login
+- Patient registration
+- Admin department management
+- Admin doctor management
+- Admin patient management
+- Admin appointment overview
+- Doctor appointment management
+- Doctor patient detail view
+- Doctor time slot management
+- Patient doctor search
+- Patient booking
+- Patient appointment view
+- Patient appointment cancel
+- Patient profile update
+
+Non-functional aspects partially addressed:
+- Simple UI usability
+- Modular code organization
+- Easy local setup
+
+Non-functional aspects weak or absent:
+- Security hardening
+- Automated testing
+- High availability
+- Observability
+- Performance benchmarking
+
+====================================================================
+41. IMPROVEMENT ROADMAP
+====================================================================
+
+High priority improvements:
+- Password hashing with BCrypt
+- JWT or persistent token strategy
+- Token expiry and refresh handling
+- Global exception handler
+- Input validation strengthening
+- Appointment conflict checks
+- Time slot booking integration
+
+Medium priority improvements:
+- Audit logs
+- Admin analytics dashboard
+- Search and filtering
+- Pagination
+- Better UI feedback states
+- Email notifications
+
+Advanced improvements:
+- Prescription module
+- Billing module
+- Lab reports
+- Role and permission granularity
+- File upload support
+- Dockerization
+- CI/CD pipeline
+- Automated test suite
+
+====================================================================
+42. EDUCATIONAL VALUE OF THIS PROJECT
+====================================================================
+
+Ye project learning purpose ke liye kaafi useful hai because:
+- Spring Boot basics cover karta hai
+- REST API design dikhata hai
+- JPA entity relationships samjha sakta hai
+- Layered architecture ka practical example hai
+- Security filter customization ka sample hai
+- Static frontend to backend integration simple format me dikhata hai
+
+Student ke liye ye concepts clear ho sakte hain:
+- Controllers vs services difference
+- DTO mapping
+- Repository pattern
+- Custom token auth
+- Role-based route protection
+- CRUD application design
+
+====================================================================
+43. PROJECT MATURITY ASSESSMENT
+====================================================================
+
+Maturity level:
+- Working prototype / academic-grade implementation
+
+Why:
+- Core features implemented hain
+- Structure organized hai
+- Default data se quick demo possible hai
+- But production-grade safeguards limited hain
+
+Maturity summary:
+- Functional completeness: moderate
+- Security completeness: low to moderate
+- Testing completeness: low
+- Maintainability: moderate
+- Deployment simplicity: high for local
+
+====================================================================
+44. EXECUTIVE SUMMARY
+====================================================================
+
+Short executive view:
+
+Ye project ek complete but lightweight hospital appointment management web application hai jo Java Spring Boot aur MySQL par based hai. Isme teen major authenticated roles hain: Admin, Doctor aur Patient. Admin departments aur doctors manage karta hai, doctor appointments aur slots handle karta hai, aur patient booking aur profile operations perform karta hai. Static HTML/CSS/JS frontend same application se serve hota hai aur custom X-Auth-Token header based authentication use hoti hai.
+
+Architecture simple aur understandable hai, isliye project academic, demo, portfolio ya internal prototype use ke liye accha candidate hai. Sabse notable strengths clear separation of modules, role-based API structure aur seed data support hain. Sabse important weaknesses password security, in-memory token handling, missing automated tests aur limited validation hain.
+
+====================================================================
+45. CONCLUSION
+====================================================================
+
+Overall, Online Doctor Appointment Booking System ek focused domain application hai jo patient appointment scheduling problem ko solve karta hai. Project me core hospital booking workflow ke essential components implemented hain: user roles, department management, doctor records, patient records, appointment lifecycle aur availability slots. Codebase layered structure follow karta hai aur samajhne me straightforward hai.
+
+Agar ise future me stronger solution banana ho to security, data validation, test coverage aur booking integrity rules ko improve karna sabse important next steps honge. Current version educational demonstration, mini-project submission, local prototype aur resume/portfolio showcase ke liye useful hai.
+
+====================================================================
+46. QUICK REFERENCE CHEAT SHEET
+====================================================================
+
+App Type:
+- Hospital appointment management web app
+
+Backend:
+- Spring Boot + JPA + Security
+
+Frontend:
+- Static HTML/CSS/JS
+
+Database:
+- MySQL
+
+Roles:
+- Admin
+- Doctor
+- Patient
+
+Default Port:
+- 8080
+
+Default Admin:
+- admin@hospital.com / admin123
+
+Default Doctor:
+- doctor@hospital.com / doctor123
+
+Main Auth Header:
+- X-Auth-Token
+
+Main Booking Statuses:
+- PENDING
+- APPROVED
+- COMPLETED
+- CANCELLED
+
+Main Risks:
+- Plain passwords
+- In-memory tokens
+- No tests
+- Slot validation gaps
+
+====================================================================
+END OF DOCUMENT
+====================================================================
