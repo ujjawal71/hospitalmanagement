@@ -20,13 +20,14 @@ public class AuthFilter extends OncePerRequestFilter {
         this.tokenStore = tokenStore;
     }
 
-    private static final List<String> PUBLIC_PATHS = List.of(
+    private static final String ROOT_PATH = "/";
+
+    private static final List<String> PUBLIC_PATH_PREFIXES = List.of(
             "/api/auth/login",
             "/api/auth/register",
             "/api/departments/list",
             "/api/doctors/by-department",
             "/index.html",
-            "/",
             "/css/",
             "/js/",
             "/pages/"
@@ -87,6 +88,9 @@ public class AuthFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicPath(String path) {
-        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
+        if (ROOT_PATH.equals(path)) {
+            return true;
+        }
+        return PUBLIC_PATH_PREFIXES.stream().anyMatch(path::startsWith);
     }
 }
