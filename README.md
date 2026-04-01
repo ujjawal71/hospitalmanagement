@@ -77,13 +77,6 @@ mvn spring-boot:run
 
 All authenticated APIs require header: `X-Auth-Token: <token>` (returned on login).
 
-## Diagrams
-
-- **ER Diagram:** `docs/ER-DIAGRAM.md`
-- **DFD Diagram:** `docs/DFD-DIAGRAM.md`
-
-(Mermaid diagrams can be viewed in GitHub or any Mermaid-compatible viewer.)
-
 ## Project Structure
 
 ```

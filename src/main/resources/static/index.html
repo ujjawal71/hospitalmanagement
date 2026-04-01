@@ -325,14 +325,108 @@
     .site-footer {
       background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
       color: #94a3b8;
-      padding: 2.5rem 1.5rem;
+      padding: 2.75rem 1.5rem 2rem;
       font-size: 0.9rem;
+      border-top: 1px solid rgba(13, 148, 136, 0.2);
     }
-    .site-footer .wrap { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; }
-    .site-footer h4 { color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem; font-weight: 600; }
+    .site-footer .wrap {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (min-width: 768px) {
+      .site-footer .wrap {
+        grid-template-columns: minmax(160px, 0.9fr) minmax(280px, 1.1fr);
+        gap: 3rem;
+      }
+    }
+    .site-footer h4 {
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
     .site-footer a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
     .site-footer a:hover { color: #5eead4; }
-    .site-footer .copy { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem; }
+    .site-footer .footer-lead {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0 0 1rem;
+      max-width: 28rem;
+    }
+    .site-footer .footer-address-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+      padding: 0.85rem 1rem;
+      background: rgba(13, 148, 136, 0.08);
+      border: 1px solid rgba(13, 148, 136, 0.22);
+      border-radius: 12px;
+    }
+    .site-footer .footer-address-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5eead4;
+    }
+    .site-footer .footer-address-lines {
+      color: #e2e8f0;
+      font-size: 0.92rem;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+    .site-footer .footer-map-shell {
+      position: relative;
+      border-radius: 14px;
+      padding: 2px;
+      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 45%, #0e7490 100%);
+      box-shadow:
+        0 4px 24px rgba(13, 148, 136, 0.25),
+        0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+    .site-footer .footer-map-inner {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #020617;
+      line-height: 0;
+    }
+    .site-footer .footer-map-inner iframe {
+      width: 100%;
+      height: 200px;
+      border: 0;
+      display: block;
+      filter: saturate(0.92) contrast(1.02);
+      transition: filter 0.3s ease;
+    }
+    .site-footer .footer-map-shell:hover .footer-map-inner iframe {
+      filter: saturate(1) contrast(1);
+    }
+    @media (min-width: 768px) {
+      .site-footer .footer-map-inner iframe { height: 220px; }
+    }
+    .site-footer .footer-map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #5eead4;
+      text-decoration: none;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .site-footer .footer-map-link:hover {
+      color: #99f6e4;
+      transform: translateX(2px);
+    }
+    .site-footer .copy { text-align: center; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem; }
 
     #sessionExpiredMsg { display: none; }
     #sessionExpiredMsg:not(.hidden) { display: block; }
@@ -351,8 +445,6 @@
     <nav>
       <a href="#book-appointment">Book Appointment</a>
       <a href="#specialities">Specialities</a>
-      <a href="/ER-DIAGRAM.html">ER Diagram</a>
-      <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
     </nav>
     <a href="#book-appointment" class="btn-book">Book an Appointment</a>
   </header>
@@ -416,7 +508,6 @@
       <p class="auth-footer"><a href="#" id="showLogin">Back to sign in</a></p>
     </div>
 
-    <div class="diagram-links">Project diagrams: <a href="/ER-DIAGRAM.html">ER Diagram</a> · <a href="/DFD-DIAGRAM.html">DFD Diagram</a></div>
   </section>
 
   <section id="specialities" class="specialities">
@@ -467,15 +558,29 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <div>
+      <div class="footer-col">
         <h4>Quick links</h4>
         <a href="#book-appointment">Book Appointment</a>
-        <a href="/ER-DIAGRAM.html">ER Diagram</a>
-        <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
+        <a href="#specialities">Specialities</a>
       </div>
-      <div>
-        <h4>Contact</h4>
-        <span>Get in Touch</span>
+      <div class="footer-col footer-location">
+        <h4>Location &amp; map</h4>
+        <p class="footer-lead">Visit our hospital in Patna — use the map below or open directions in Google Maps.</p>
+        <div class="footer-address-block">
+          <span class="footer-address-label">Address</span>
+          <span class="footer-address-lines">Patna, Bihar, India</span>
+        </div>
+        <div class="footer-map-shell">
+          <div class="footer-map-inner">
+            <iframe
+              src="https://maps.google.com/maps?q=Patna%2C%20Bihar&t=&z=12&ie=UTF8&iwloc=&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Patna location map">
+            </iframe>
+          </div>
+        </div>
+        <a class="footer-map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Patna%2C+Bihar%2C+India" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
       </div>
     </div>
     <p class="copy">© Hospital Appointment System. All rights reserved.</p>

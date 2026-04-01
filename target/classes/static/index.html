@@ -332,6 +332,14 @@
     .site-footer h4 { color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem; font-weight: 600; }
     .site-footer a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
     .site-footer a:hover { color: #5eead4; }
+    .site-footer .map-embed {
+      width: 100%;
+      max-width: 320px;
+      height: 180px;
+      border: 0;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+    }
     .site-footer .copy { text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.85rem; }
 
     #sessionExpiredMsg { display: none; }
@@ -351,8 +359,6 @@
     <nav>
       <a href="#book-appointment">Book Appointment</a>
       <a href="#specialities">Specialities</a>
-      <a href="/ER-DIAGRAM.html">ER Diagram</a>
-      <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
     </nav>
     <a href="#book-appointment" class="btn-book">Book an Appointment</a>
   </header>
@@ -416,7 +422,6 @@
       <p class="auth-footer"><a href="#" id="showLogin">Back to sign in</a></p>
     </div>
 
-    <div class="diagram-links">Project diagrams: <a href="/ER-DIAGRAM.html">ER Diagram</a> · <a href="/DFD-DIAGRAM.html">DFD Diagram</a></div>
   </section>
 
   <section id="specialities" class="specialities">
@@ -470,12 +475,19 @@
       <div>
         <h4>Quick links</h4>
         <a href="#book-appointment">Book Appointment</a>
-        <a href="/ER-DIAGRAM.html">ER Diagram</a>
-        <a href="/DFD-DIAGRAM.html">DFD Diagram</a>
       </div>
       <div>
         <h4>Contact</h4>
         <span>Get in Touch</span>
+        <br>
+        <span>Patna, Bihar</span>
+        <iframe
+          class="map-embed"
+          src="https://maps.google.com/maps?q=Patna%2C%20Bihar&t=&z=12&ie=UTF8&iwloc=&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Patna location map">
+        </iframe>
       </div>
     </div>
     <p class="copy">© Hospital Appointment System. All rights reserved.</p>
