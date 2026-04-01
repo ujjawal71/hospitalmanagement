@@ -1,0 +1,232 @@
+================================================================================
+ONLINE DOCTOR APPOINTMENT BOOKING SYSTEM
+ER Diagram & DFD — Project content + code (copy for PDF / report)
+Source pages in project: src/main/resources/static/ER-DIAGRAM.html
+                        src/main/resources/static/DFD-DIAGRAM.html
+================================================================================
+
+--- SECTION A: SHORT PROJECT CONTEXT ---
+This system lets patients register, log in, book doctor appointments by
+department and time slot, and manage their profile. Doctors log in to view
+appointments, update status (e.g. PENDING / APPROVED / COMPLETED / CANCELLED),
+see patient details, and define time slots. Admins manage departments, doctors,
+users, and can view all appointments.
+
+Tech (typical for this repo): Java, Spring Boot, Spring Security, JPA, MySQL;
+frontend as static HTML/CSS/JS under src/main/resources/static.
+
+================================================================================
+SECTION B: ER DIAGRAM (ENTITY–RELATIONSHIP)
+================================================================================
+
+TITLE (for figure above screenshot):
+  Figure: Entity–Relationship (ER) Diagram — Doctor Appointment Booking System
+
+DESCRIPTION (paragraph — paste as report text):
+The ER diagram shows main data entities and how they connect. ADMIN stores
+administrator accounts. DEPARTMENT groups medical areas (Cardiology, Dental,
+etc.). PATIENT holds registered users who book visits. DOCTOR belongs to one
+department and has specialization and availability-related fields. APPOINTMENT
+links one patient and one doctor for a date, time, and status. TIME_SLOT stores
+doctor-specific bookable slots (date, start/end time, available flag). Primary
+keys (PK) identify rows; unique email (UK) avoids duplicate logins; foreign keys
+(FK) tie appointments to patients and doctors, doctors to departments, and
+slots to doctors.
+
+ENTITY SUMMARY TABLE (plain text):
+  Entity        | PK              | Short description
+  -------------|-----------------|------------------------------------------
+  Admin        | id              | System administrators
+  Department   | id              | Hospital departments
+  Patient      | patient_id      | Registered patients
+  Doctor       | doctor_id       | Doctors; linked to department
+  Appointment  | appointment_id  | Bookings patient–doctor, date/time/status
+  TimeSlot     | id              | Doctor availability slots
+
+RELATIONSHIPS (one line each):
+  Department 1 ——< many Doctor
+  Patient    1 ——< many Appointment
+  Doctor     1 ——< many Appointment
+  Doctor     1 ——< many TimeSlot
+
+KEY LEGEND:
+  PK = Primary Key   UK = Unique   FK = Foreign Key
+
+--- MERMAID CODE (ER) — same as inside ER-DIAGRAM.html ---
+
+erDiagram
+    ADMIN {
+        long id PK
+        string name
+        string email UK
+        string password
+    }
+    DEPARTMENT {
+        long id PK
+        string name UK
+        string description
+    }
+    PATIENT {
+        long patient_id PK
+        string name
+        string email UK
+        string password
+        string phone
+    }
+    DOCTOR {
+        long doctor_id PK
+        string name
+        string email UK
+        string department_id FK
+        string specialization
+        string availability
+    }
+    APPOINTMENT {
+        long appointment_id PK
+        long patient_id FK
+        long doctor_id FK
+        date date
+        time time
+        string status
+    }
+    TIME_SLOT {
+        long id PK
+        long doctor_id FK
+        date slot_date
+        time start_time
+        time end_time
+        boolean available
+    }
+    DEPARTMENT ||--o{ DOCTOR : has
+    PATIENT ||--o{ APPOINTMENT : books
+    DOCTOR ||--o{ APPOINTMENT : has
+    DOCTOR ||--o{ TIME_SLOT : has
+
+--- OPTIONAL: HTML PAGE ROLE (what the .html file does) ---
+ER-DIAGRAM.html loads Mermaid from CDN, renders the diagram above, and shows an
+“Entity Descriptions” table (Admin, Department, Patient, Doctor, Appointment,
+TimeSlot) with PK note and PK/UK/FK legend.
+
+================================================================================
+SECTION C: DFD (DATA FLOW DIAGRAM)
+================================================================================
+
+TITLE (Level 0 — above screenshot):
+  Figure: DFD Level 0 — Context diagram
+
+TITLE (Level 1 — above screenshot):
+  Figure: DFD Level 1 — Processes and data stores
+
+DESCRIPTION — LEVEL 0 (paragraph):
+The context diagram shows Patient, Manager (staff), and Admin as external
+actors. In this project the actors are Patient, Doctor, and Admin. They all
+interact with one central process: “Doctor Appointment Booking System”.
+Bidirectional arrows mean data flows both ways (requests from users, responses
+and updated data from the system).
+
+DESCRIPTION — LEVEL 1 (paragraph):
+Level 1 decomposes the system into processes: Authentication; Manage Doctors
+and Departments; Manage Appointments; Manage Time Slots; Manage Users/Profile.
+Data stores hold Patients, Doctors, Departments, Appointments, Time Slots, and
+Admins. Patients use auth, appointments, and profile processes. Doctors use
+auth, appointments, and time slots. Admins use auth, doctor/department
+management, appointments, and user/profile management as modeled.
+
+DATA FLOWS SUMMARY TABLE (plain text):
+  From    | To     | Data flow (examples)
+  --------|--------|--------------------------------------------------
+  Patient | System | Login, Register, Book, Cancel, Profile
+  Doctor  | System | Login, Appointments, Time slots
+  Admin   | System | Login, CRUD doctors/departments, View appointments, Manage users
+  System  | Patient| Appointment list, Booking confirmation
+  System  | Doctor | Appointment list, Patient details
+  System  | Admin  | Lists: doctors, patients, appointments, departments
+
+--- MERMAID CODE (DFD Level 0) — from DFD-DIAGRAM.html ---
+
+flowchart LR
+    subgraph External
+        Patient([Patient])
+        Doctor([Doctor])
+        Admin([Admin])
+    end
+    subgraph System
+        SYS[Doctor Appointment Booking System]
+    end
+    Patient <--> SYS
+    Doctor <--> SYS
+    Admin <--> SYS
+
+--- MERMAID CODE (DFD Level 1) — from DFD-DIAGRAM.html ---
+
+flowchart TB
+    subgraph Users
+        P([Patient])
+        D([Doctor])
+        A([Admin])
+    end
+    subgraph Processes
+        P1[1.0 Authentication]
+        P2[2.0 Manage Doctors & Depts]
+        P3[3.0 Manage Appointments]
+        P4[4.0 Manage Time Slots]
+        P5[5.0 Manage Users/Profile]
+    end
+    subgraph DataStores
+        DS1[(Patients)]
+        DS2[(Doctors)]
+        DS3[(Departments)]
+        DS4[(Appointments)]
+        DS5[(Time Slots)]
+        DS6[(Admins)]
+    end
+    P --> P1
+    P --> P3
+    P --> P5
+    D --> P1
+    D --> P3
+    D --> P4
+    A --> P1
+    A --> P2
+    A --> P3
+    A --> P5
+    P1 --> DS1
+    P1 --> DS2
+    P1 --> DS6
+    P2 --> DS2
+    P2 --> DS3
+    P3 --> DS4
+    P4 --> DS5
+    P5 --> DS1
+
+--- OPTIONAL: HTML PAGE ROLE ---
+DFD-DIAGRAM.html has sections: Level 0 context, Level 1 processes & stores,
+and a “Data Flows Summary” HTML table matching the rows above.
+
+================================================================================
+SECTION D: HOW TO USE THIS FILE FOR PDF
+================================================================================
+1) Copy Section B text + MERMAID block for ER chapter.
+2) Copy Section C text + both MERMAID blocks for DFD chapter.
+3) For actual diagrams in PDF: export from Mermaid Live Editor using the code
+   blocks, paste images, put titles from SECTION B/C “TITLE” lines above each.
+4) Full runnable HTML remains in: ER-DIAGRAM.html and DFD-DIAGRAM.html
+
+================================================================================
+SECTION E: JAVA + JAVASCRIPT CODE WITH FULL REPORT (PDF)
+================================================================================
+For long report text PLUS real project source (Java controllers, entities,
+security, and static/js/app.js), open or regenerate:
+
+  PROJECT-REPORT-100PAGES.txt   (project root)
+
+Regenerate after code changes:
+  python3 scripts/generate_long_report.py
+
+Section "20. SOURCE CODE WITH DESCRIPTIONS (COLLEGE PROJECT FORMAT)" gives,
+for each main file: Aim/Description paragraphs (English, viva-friendly) plus
+the full Java or JavaScript listing for Word/PDF.
+
+================================================================================
+END OF FILE
+================================================================================
