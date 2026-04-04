@@ -37,16 +37,17 @@
       </table>
     </div>
     <div id="bookModal" class="card hidden mt-2">
-      <h3>Book Appointment</h3>
+      <h3>Book appointment</h3>
       <form id="bookForm">
         <input type="hidden" id="bookDoctorId">
         <p>Doctor: <strong id="bookDoctorName"></strong></p>
-        <label>Date</label>
+        <label for="bookDate">Date</label>
         <input type="date" id="bookDate" required>
-        <label>Time</label>
-        <input type="time" id="bookTime" required>
-        <button type="submit" class="btn btn-primary">Confirm Booking</button>
-        <button type="button" class="btn btn-secondary" id="cancelBook">Cancel</button>
+        <label for="bookTime">Time</label>
+        <input type="time" id="bookTime" required step="60">
+        <p style="font-size:0.85rem;color:#64748b;margin-top:0.5rem;">Time is sent in a standard format so it works on all browsers and PCs.</p>
+        <button type="submit" class="btn btn-primary mt-1">Confirm booking</button>
+        <button type="button" class="btn btn-secondary mt-1" id="cancelBook">Cancel</button>
       </form>
     </div>
     <div id="message" class="hidden"></div>
@@ -57,11 +58,43 @@
     document.getElementById('userInfo').textContent = getUserName() + ' (Patient)';
     document.getElementById('logoutBtn').addEventListener('click', () => { clearAuth(); });
 
+    /** Normalize &lt;input type="time"&gt; value to HH:mm:ss for reliable Spring parsing everywhere. */
+    function toIsoLocalTimeForApi(raw) {
+      if (!raw) return '';
+      var parts = String(raw).trim().split(':');
+      if (parts.length < 2) return raw;
+      var h = String(parseInt(parts[0], 10)).padStart(2, '0');
+      var m = String(parseInt(parts[1], 10)).padStart(2, '0');
+      var s = parts.length >= 3 ? String(parseInt(parts[2], 10)).padStart(2, '0') : '00';
+      return h + ':' + m + ':' + s;
+    }
+
     let doctors = [];
+    function fillDepartmentSelect(list) {
+      var sel = document.getElementById('deptSelect');
+      sel.innerHTML = '<option value="">Select department</option>' +
+        (list || []).map(function(d) {
+          return '<option value="' + d.id + '">' + (d.name || '') + '</option>';
+        }).join('');
+    }
+
     async function loadDepartments() {
-      const list = await apiGet('/patient/departments');
-      const sel = document.getElementById('deptSelect');
-      sel.innerHTML = '<option value="">Select department</option>' + list.map(d => '<option value="' + d.id + '">' + d.name + '</option>').join('');
+      try {
+        var list = await apiGet('/patient/departments');
+        fillDepartmentSelect(list);
+      } catch (e1) {
+        try {
+          var res = await fetch('/api/departments/list');
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var list2 = await res.json();
+          fillDepartmentSelect(list2);
+        } catch (e2) {
+          document.getElementById('message').textContent =
+            'Could not load departments. Check you are logged in and the server is running.';
+          document.getElementById('message').className = 'alert alert-error';
+          document.getElementById('message').classList.remove('hidden');
+        }
+      }
     }
 
     document.getElementById('searchDoctors').addEventListener('click', async () => {
@@ -89,6 +122,12 @@
           btn.addEventListener('click', () => {
             document.getElementById('bookDoctorId').value = btn.dataset.id;
             document.getElementById('bookDoctorName').textContent = btn.dataset.name;
+            var dateEl = document.getElementById('bookDate');
+            var today = new Date();
+            var y = today.getFullYear();
+            var mo = String(today.getMonth() + 1).padStart(2, '0');
+            var da = String(today.getDate()).padStart(2, '0');
+            dateEl.min = y + '-' + mo + '-' + da;
             document.getElementById('bookModal').classList.remove('hidden');
           });
         });
@@ -99,14 +138,22 @@
       }
     });
 
-    document.getElementById('cancelBook').addEventListener('click', () => document.getElementById('bookModal').classList.add('hidden'));
+    document.getElementById('cancelBook').addEventListener('click', () => {
+      document.getElementById('bookModal').classList.add('hidden');
+    });
+
     document.getElementById('bookForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const doctorId = document.getElementById('bookDoctorId').value;
       const date = document.getElementById('bookDate').value;
-      const time = document.getElementById('bookTime').value;
+      const timeRaw = document.getElementById('bookTime').value;
+      const timeIso = toIsoLocalTimeForApi(timeRaw);
+      const params = new URLSearchParams();
+      params.set('doctorId', doctorId);
+      params.set('date', date);
+      params.set('time', timeIso);
       try {
-        await apiPost('/patient/appointments?doctorId=' + doctorId + '&date=' + date + '&time=' + time);
+        await apiPost('/patient/appointments?' + params.toString());
         document.getElementById('message').textContent = 'Appointment booked successfully.';
         document.getElementById('message').className = 'alert alert-success';
         document.getElementById('message').classList.remove('hidden');

@@ -83,11 +83,11 @@ function redirectByRole() {
 
 function requireAuth(expectedRole) {
   if (!getToken()) {
-    location.href = '/index.html';
+    location.href = '/pages/login.html';
     return false;
   }
   if (expectedRole && getRole() !== expectedRole) {
-    location.href = '/index.html';
+    location.href = '/pages/login.html';
     return false;
   }
   return true;

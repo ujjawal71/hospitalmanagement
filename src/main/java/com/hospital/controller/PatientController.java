@@ -11,11 +11,15 @@ import com.hospital.service.DoctorService;
 import com.hospital.service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController
@@ -54,9 +58,25 @@ public class PatientController {
             HttpServletRequest request,
             @RequestParam Long doctorId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time) {
+            @RequestParam String time) {
         Long patientId = getPatientId(request);
-        return ResponseEntity.ok(appointmentService.book(patientId, doctorId, date, time));
+        LocalTime localTime = parseFlexibleLocalTime(time);
+        return ResponseEntity.ok(appointmentService.book(patientId, doctorId, date, localTime));
+    }
+
+    /**
+     * Accepts ISO local time from any common browser: HH:mm, HH:mm:ss, or with fractional seconds.
+     */
+    private static LocalTime parseFlexibleLocalTime(String time) {
+        if (time == null || time.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Time is required");
+        }
+        String t = time.trim();
+        try {
+            return LocalTime.parse(t, DateTimeFormatter.ISO_LOCAL_TIME);
+        } catch (DateTimeParseException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid time format. Use a valid time (e.g. 09:30).");
+        }
     }
 
     @GetMapping("/appointments")

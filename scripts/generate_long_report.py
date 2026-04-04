@@ -128,11 +128,11 @@ This file is central to explain “how unauthorized users are blocked” in the 
         """PatientController serves all patient-facing REST endpoints under /api/patient. It uses the authenticated
 user ID from the request attribute set by AuthFilter.
 
-Typical operations: list departments, list doctors by department, book an appointment (doctor ID, date,
-time query parameters), list and cancel own appointments, get and update profile.
+Typical operations: list departments, list doctors by department, book via POST with doctorId, ISO date,
+and time string (parsed flexibly as ISO local time for cross-browser compatibility), list and cancel own
+appointments, get and update profile.
 
-This controller demonstrates REST design with GET/POST/DELETE/PUT and use of LocalDate / LocalTime formatting
-for booking.""",
+This controller demonstrates REST design with GET/POST/DELETE/PUT for the patient portal.""",
     ),
     (
         "src/main/java/com/hospital/controller/AdminController.java",

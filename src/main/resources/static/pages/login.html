@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in | Hospital Appointment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 35%, #fff 100%); min-height: 100vh; }
+    .auth-header {
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 2px 20px rgba(14, 116, 144, 0.08);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .auth-header .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0e7490;
+      text-decoration: none;
+    }
+    .auth-header nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .auth-header nav a {
+      color: #334155;
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .auth-header nav a:hover { background: #f0fdfa; color: #0d9488; }
+    .auth-header .nav-register {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      color: #fff !important;
+    }
+    .auth-header .nav-register:hover { opacity: 0.95; color: #fff !important; }
+    .auth-wrap { max-width: 440px; margin: 2.5rem auto; padding: 0 1rem; }
+    .auth-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(14, 116, 144, 0.12), 0 0 0 1px rgba(14, 116, 144, 0.06);
+      padding: 2rem 1.75rem;
+    }
+    .auth-card h1 { font-size: 1.35rem; font-weight: 700; color: #0f172a; text-align: center; margin-bottom: 0.25rem; }
+    .auth-card .sub { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 1.25rem; }
+    .role-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .role-tabs button {
+      padding: 0.65rem;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+    .role-tabs button.active {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      color: #fff;
+      border-color: transparent;
+    }
+    .auth-card label { display: block; margin-top: 0.75rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
+    .auth-card input {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+    }
+    .auth-card input:focus { outline: none; border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, #e2e8f0, transparent); margin: 1.25rem 0; }
+    .auth-card .btn-primary {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .auth-footer { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 1.25rem; }
+    .auth-footer a { font-weight: 600; color: #0d9488; }
+    #sessionExpiredMsg.hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="auth-header">
+    <a href="/index.html" class="brand">Hospital Appointment System</a>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/pages/register.html" class="nav-register">Register</a>
+    </nav>
+  </header>
+
+  <main class="auth-wrap">
+    <div id="sessionExpiredMsg" class="alert alert-info hidden" style="margin-bottom:1rem;">You were signed out. Please sign in again.</div>
+    <div class="auth-card login-card">
+      <h1>Sign in</h1>
+      <p class="sub">Choose your role and enter your email and password.</p>
+      <div class="role-tabs">
+        <button type="button" data-role="ADMIN">Admin</button>
+        <button type="button" data-role="DOCTOR">Doctor</button>
+        <button type="button" data-role="PATIENT" class="active">Patient</button>
+      </div>
+      <form id="loginForm">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required placeholder="name@example.com" autocomplete="email">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+        <input type="hidden" id="loginRole" value="PATIENT">
+        <div id="loginError" class="alert alert-error hidden"></div>
+        <div class="divider"></div>
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+      <p class="auth-footer">New patient? <a href="/pages/register.html">Create an account</a></p>
+    </div>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    if (new URLSearchParams(window.location.search).get('session') === 'expired') {
+      document.getElementById('sessionExpiredMsg').classList.remove('hidden');
+    }
+    var currentRole = 'PATIENT';
+
+    function updateLoginTexts(role) {
+      var sub = document.querySelector('.login-card .sub');
+      var footer = document.querySelector('.login-card .auth-footer');
+      if (!sub || !footer) return;
+      if (role === 'ADMIN') {
+        sub.textContent = 'Sign in as Admin.';
+        footer.style.display = 'none';
+      } else if (role === 'DOCTOR') {
+        sub.textContent = 'Sign in as Doctor.';
+        footer.style.display = 'none';
+      } else {
+        sub.textContent = 'Sign in as Patient to book appointments.';
+        footer.style.display = 'block';
+      }
+    }
+
+    document.querySelectorAll('.role-tabs button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.role-tabs button').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentRole = btn.dataset.role;
+        document.getElementById('loginRole').value = currentRole;
+        updateLoginTexts(currentRole);
+      });
+    });
+    updateLoginTexts(currentRole);
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var errEl = document.getElementById('loginError');
+      errEl.classList.add('hidden');
+      var activeRole = document.querySelector('.role-tabs button.active');
+      var role = (activeRole && activeRole.dataset.role) ? activeRole.dataset.role : currentRole;
+      try {
+        await login(
+          document.getElementById('loginEmail').value.trim(),
+          document.getElementById('loginPassword').value,
+          role
+        );
+        redirectByRole();
+      } catch (err) {
+        errEl.textContent = err.message || 'Sign in failed';
+        errEl.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

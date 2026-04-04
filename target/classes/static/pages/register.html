@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Hospital Appointment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: linear-gradient(180deg, #f0fdfa 0%, #f8fafc 35%, #fff 100%); min-height: 100vh; }
+    .auth-header {
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 2px 20px rgba(14, 116, 144, 0.08);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .auth-header .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0e7490;
+      text-decoration: none;
+    }
+    .auth-header nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .auth-header nav a {
+      color: #334155;
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .auth-header nav a:hover { background: #f0fdfa; color: #0d9488; }
+    .auth-header .nav-login {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      color: #fff !important;
+    }
+    .auth-header .nav-login:hover { opacity: 0.95; color: #fff !important; }
+    .auth-wrap { max-width: 440px; margin: 2.5rem auto; padding: 0 1rem; }
+    .auth-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(14, 116, 144, 0.12), 0 0 0 1px rgba(14, 116, 144, 0.06);
+      padding: 2rem 1.75rem;
+    }
+    .auth-card h1 { font-size: 1.35rem; font-weight: 700; color: #0f172a; text-align: center; margin-bottom: 0.25rem; }
+    .auth-card .sub { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 1.25rem; }
+    .auth-card label { display: block; margin-top: 0.75rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
+    .auth-card input {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+    }
+    .auth-card input:focus { outline: none; border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, #e2e8f0, transparent); margin: 1.25rem 0; }
+    .auth-card .btn-primary {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .auth-footer { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 1.25rem; }
+    .auth-footer a { font-weight: 600; color: #0d9488; }
+  </style>
+</head>
+<body>
+  <header class="auth-header">
+    <a href="/index.html" class="brand">Hospital Appointment System</a>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/pages/login.html" class="nav-login">Login</a>
+    </nav>
+  </header>
+
+  <main class="auth-wrap">
+    <div class="auth-card">
+      <h1>Create patient account</h1>
+      <p class="sub">Register to book doctor appointments.</p>
+      <form id="registerForm">
+        <label for="regName">Full name</label>
+        <input type="text" id="regName" required placeholder="John Doe" autocomplete="name">
+        <label for="regEmail">Email</label>
+        <input type="email" id="regEmail" required placeholder="name@example.com" autocomplete="email">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" required placeholder="••••••••" autocomplete="new-password">
+        <label for="regPhone">Phone <span style="color:#94a3b8;font-weight:400;">(optional)</span></label>
+        <input type="tel" id="regPhone" placeholder="+91 98765 43210" autocomplete="tel">
+        <div id="registerError" class="alert alert-error hidden"></div>
+        <div id="registerSuccess" class="alert alert-success hidden"></div>
+        <div class="divider"></div>
+        <button type="submit" class="btn-primary">Create account</button>
+      </form>
+      <p class="auth-footer">Already have an account? <a href="/pages/login.html">Sign in</a></p>
+    </div>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var errEl = document.getElementById('registerError');
+      var okEl = document.getElementById('registerSuccess');
+      errEl.classList.add('hidden');
+      okEl.classList.add('hidden');
+      try {
+        await register({
+          name: document.getElementById('regName').value,
+          email: document.getElementById('regEmail').value,
+          password: document.getElementById('regPassword').value,
+          phone: document.getElementById('regPhone').value || null
+        });
+        okEl.textContent = 'Account created. You can sign in now.';
+        okEl.classList.remove('hidden');
+        document.getElementById('registerForm').reset();
+      } catch (err) {
+        errEl.textContent = err.message || 'Registration failed';
+        errEl.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
