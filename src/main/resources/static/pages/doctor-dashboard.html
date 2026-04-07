@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Doctor Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/glass-blue-theme.css">
 </head>
-<body>
-  <header>
+<body class="doctor-glass-portal">
+  <header class="doctor-glass-header">
     <h1>Doctor Dashboard</h1>
     <nav>
       <a href="/pages/doctor-dashboard.html">Dashboard</a>
@@ -18,6 +20,13 @@
     <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
   </header>
   <main class="container">
+    <div class="doctor-page-hero">
+      <img src="/images/doctor-with-patient-hospital-doctor-working-office-listening-patient-she-is-explaining-her-symptoms-healtcare-assistance-concept_657921-287.jpg" alt="Doctor with patient in consultation" width="1200" height="400" loading="eager">
+      <div class="doctor-page-hero-caption">
+        <strong>Your practice hub</strong>
+        <span>Welcome back — track appointments and the time slots patients can book, all in one place.</span>
+      </div>
+    </div>
     <h2 class="mb-2">Welcome, <span id="docName"></span></h2>
     <div class="stats">
       <div class="stat-card"><span class="num" id="statAppointments">-</span><span class="label">My Appointments</span></div>

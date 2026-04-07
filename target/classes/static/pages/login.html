@@ -6,18 +6,9 @@
   <title>Sign in | Hospital Appointment System</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/glass-blue-theme.css">
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(ellipse 120% 80% at 10% -20%, rgba(45, 212, 191, 0.35), transparent 50%),
-        radial-gradient(ellipse 90% 70% at 100% 30%, rgba(13, 148, 136, 0.2), transparent 45%),
-        linear-gradient(165deg, #ccfbf1 0%, #ecfeff 28%, #f8fafc 55%, #ffffff 100%);
-    }
     .auth-header {
-      background: rgba(255,255,255,0.98);
-      box-shadow: 0 2px 20px rgba(14, 116, 144, 0.08);
       padding: 0.85rem 1.5rem;
       display: flex;
       justify-content: space-between;
@@ -25,191 +16,17 @@
       flex-wrap: wrap;
       gap: 0.75rem;
     }
-    .auth-header .brand {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #0e7490;
-      text-decoration: none;
-    }
+    .auth-header .brand { font-size: 1.2rem; font-weight: 700; text-decoration: none; }
     .auth-header nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
     .auth-header nav a {
-      color: #334155;
       padding: 0.45rem 0.85rem;
       border-radius: 10px;
       font-weight: 500;
       text-decoration: none;
     }
-    .auth-header nav a:hover { background: #f0fdfa; color: #0d9488; }
-    .auth-header .nav-register {
-      background: linear-gradient(135deg, #0d9488, #0f766e);
-      color: #fff !important;
-    }
-    .auth-header .nav-register:hover { opacity: 0.95; color: #fff !important; }
-    .login-page { display: flex; flex-direction: column; min-height: calc(100vh - 58px); }
-    .login-hero {
-      display: grid;
-      flex: 1;
-      align-items: stretch;
-      grid-template-columns: 1fr;
-      max-width: 1120px;
-      width: 100%;
-      margin: 0 auto;
-      gap: 0;
-    }
-    @media (min-width: 900px) {
-      .login-hero { grid-template-columns: 1.05fr 0.95fr; min-height: min(640px, calc(100vh - 58px)); }
-    }
-    .login-hero-visual {
-      position: relative;
-      min-height: 200px;
-      border-radius: 0 0 20px 20px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(15, 118, 110, 0.2);
-    }
-    @media (min-width: 900px) {
-      .login-hero-visual {
-        min-height: 0;
-        border-radius: 0 20px 20px 0;
-        margin: 1.5rem 0 1.5rem 1.25rem;
-      }
-    }
-    .login-hero-visual img {
-      width: 100%;
-      height: 100%;
-      min-height: 220px;
-      object-fit: cover;
-      display: block;
-    }
-    @media (min-width: 900px) {
-      .login-hero-visual img { min-height: 100%; position: absolute; inset: 0; }
-    }
-    .login-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(15, 118, 110, 0.15) 0%, rgba(13, 148, 136, 0.72) 55%, rgba(15, 118, 110, 0.92) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.35rem 1.25rem 1.5rem;
-      pointer-events: none;
-    }
-    @media (min-width: 900px) {
-      .login-hero-overlay { padding: 2rem 2rem 2.25rem; }
-    }
-    .login-hero-overlay h2 {
-      margin: 0 0 0.35rem;
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: #fff;
-      text-shadow: 0 1px 12px rgba(0,0,0,0.2);
-    }
-    .login-hero-overlay p {
-      margin: 0;
-      font-size: 0.92rem;
-      line-height: 1.45;
-      color: rgba(255,255,255,0.95);
-      max-width: 28rem;
-    }
-    .login-hero-form {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem 2rem;
-    }
-    @media (min-width: 900px) {
-      .login-hero-form { padding: 1.5rem 1.5rem 1.5rem 0.5rem; }
-    }
-    .auth-wrap { max-width: 440px; width: 100%; margin: 0 auto; }
-    .auth-card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow:
-        0 20px 50px rgba(14, 116, 144, 0.14),
-        0 0 0 1px rgba(14, 116, 144, 0.06),
-        inset 0 3px 0 0 #14b8a6;
-      padding: 2rem 1.75rem;
-    }
-    .auth-card h1 { font-size: 1.35rem; font-weight: 700; color: #0f172a; text-align: center; margin-bottom: 0.25rem; }
-    .auth-card .sub { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 1.25rem; }
-    .role-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 1.25rem; }
-    .role-tabs button {
-      padding: 0.65rem;
-      border: 2px solid #e2e8f0;
-      background: #f8fafc;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      color: #64748b;
-    }
-    .role-tabs button.active {
-      background: linear-gradient(135deg, #0d9488, #0f766e);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
-    }
-    .auth-card label { display: block; margin-top: 0.75rem; font-weight: 500; font-size: 0.9rem; color: #334155; }
-    .auth-card input {
-      width: 100%;
-      margin-top: 0.35rem;
-      padding: 0.65rem 0.85rem;
-      border-radius: 10px;
-      border: 2px solid #e2e8f0;
-    }
-    .auth-card input:focus { outline: none; border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
-    .divider { height: 1px; background: linear-gradient(90deg, transparent, #e2e8f0, transparent); margin: 1.25rem 0; }
-    .auth-card .btn-primary {
-      width: 100%;
-      padding: 0.8rem;
-      margin-top: 1rem;
-      font-size: 1rem;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #0d9488, #0f766e);
-      border: none;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .auth-footer { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 1.25rem; }
-    .auth-footer a { font-weight: 600; color: #0d9488; }
-    #sessionExpiredMsg.hidden { display: none !important; }
-    .login-gallery {
-      max-width: 1120px;
-      margin: 0 auto 2rem;
-      padding: 0 1rem;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.85rem;
-    }
-    @media (min-width: 640px) {
-      .login-gallery { grid-template-columns: 1fr 1fr; gap: 1rem; }
-    }
-    .login-gallery figure {
-      margin: 0;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(15, 118, 110, 0.12);
-      border: 1px solid rgba(13, 148, 136, 0.15);
-      background: #fff;
-    }
-    .login-gallery img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      display: block;
-    }
-    @media (min-width: 900px) {
-      .login-gallery img { height: 180px; }
-    }
-    .login-gallery figcaption {
-      padding: 0.65rem 0.85rem;
-      font-size: 0.82rem;
-      color: #475569;
-      background: linear-gradient(180deg, #f8fafc, #fff);
-    }
   </style>
 </head>
-<body>
+<body class="glass-blue-auth">
   <header class="auth-header">
     <a href="/index.html" class="brand">Hospital Appointment System</a>
     <nav>

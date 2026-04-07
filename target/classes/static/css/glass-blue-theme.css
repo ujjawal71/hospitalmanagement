@@ -1,0 +1,536 @@
+/* Dark blue glassmorphism — auth + doctor portal */
+
+:root {
+  --gb-deep: #0a1628;
+  --gb-mid: #0f2744;
+  --gb-ink: #082f49;
+  --gb-cyan: #22d3ee;
+  --gb-sky: #38bdf8;
+  --glass-surface: rgba(255, 255, 255, 0.1);
+  --glass-edge: rgba(255, 255, 255, 0.18);
+  --glass-blur: blur(18px);
+}
+
+/* ——— Abstract background glow (auth + doctor) ——— */
+body.glass-blue-auth,
+body.doctor-glass-portal {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: #e2e8f0;
+  background:
+    radial-gradient(ellipse 100% 80% at 10% -30%, rgba(34, 211, 238, 0.22), transparent 45%),
+    radial-gradient(ellipse 70% 50% at 95% 15%, rgba(56, 189, 248, 0.18), transparent 40%),
+    radial-gradient(circle at 60% 85%, rgba(14, 165, 233, 0.12), transparent 35%),
+    linear-gradient(168deg, #050f1c 0%, var(--gb-deep) 35%, var(--gb-mid) 70%, #0a1929 100%);
+  background-attachment: fixed;
+}
+
+body.glass-blue-auth::before,
+body.doctor-glass-portal::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 40% 30% at 80% 60%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 45% at 20% 40%, rgba(56, 189, 248, 0.06) 0%, transparent 45%),
+    repeating-linear-gradient(
+      -25deg,
+      transparent,
+      transparent 120px,
+      rgba(34, 211, 238, 0.03) 120px,
+      rgba(34, 211, 238, 0.03) 122px
+    );
+}
+
+body.glass-blue-auth .login-page,
+body.glass-blue-auth > header,
+body.doctor-glass-portal > header,
+body.doctor-glass-portal > main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ——— Auth header ——— */
+body.glass-blue-auth .auth-header {
+  background: rgba(15, 39, 68, 0.72);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-edge);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+body.glass-blue-auth .auth-header .brand {
+  color: #f0f9ff;
+  text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
+}
+body.glass-blue-auth .auth-header nav a {
+  color: rgba(224, 242, 254, 0.92);
+}
+body.glass-blue-auth .auth-header nav a:hover {
+  background: rgba(34, 211, 238, 0.15);
+  color: #fff;
+}
+body.glass-blue-auth .auth-header .nav-register,
+body.glass-blue-auth .auth-header .nav-login {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.45);
+}
+
+/* ——— Auth layout ——— */
+body.glass-blue-auth .login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 58px);
+}
+body.glass-blue-auth .login-hero {
+  display: grid;
+  flex: 1;
+  align-items: stretch;
+  grid-template-columns: 1fr;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0;
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-hero {
+    grid-template-columns: 1.05fr 0.95fr;
+    min-height: min(640px, calc(100vh - 58px));
+  }
+}
+body.glass-blue-auth .login-hero-visual {
+  position: relative;
+  min-height: 200px;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(34, 211, 238, 0.2);
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-hero-visual {
+    min-height: 0;
+    border-radius: 0 20px 20px 0;
+    margin: 1.5rem 0 1.5rem 1.25rem;
+  }
+}
+body.glass-blue-auth .login-hero-visual img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-hero-visual img {
+    min-height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+}
+body.glass-blue-auth .login-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.05) 0%,
+    rgba(8, 47, 73, 0.7) 50%,
+    rgba(12, 74, 110, 0.92) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.35rem 1.25rem 1.5rem;
+  pointer-events: none;
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-hero-overlay {
+    padding: 2rem 2rem 2.25rem;
+  }
+}
+body.glass-blue-auth .login-hero-overlay h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+}
+body.glass-blue-auth .login-hero-overlay p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 28rem;
+}
+body.glass-blue-auth .login-hero-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem 2rem;
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-hero-form {
+    padding: 1.5rem 1.5rem 1.5rem 0.5rem;
+  }
+}
+body.glass-blue-auth .auth-wrap {
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ——— Glass card (login / register) ——— */
+body.glass-blue-auth .auth-card {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  border: 1px solid var(--glass-edge);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  padding: 2rem 1.75rem;
+}
+body.glass-blue-auth .auth-card h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f8fafc;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+body.glass-blue-auth .auth-card .sub {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(224, 242, 254, 0.85);
+  margin-bottom: 1.25rem;
+}
+body.glass-blue-auth .role-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+body.glass-blue-auth .role-tabs button {
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 39, 68, 0.45);
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: rgba(226, 232, 240, 0.9);
+}
+body.glass-blue-auth .role-tabs button.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #fff;
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.4);
+}
+body.glass-blue-auth .auth-card label {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(224, 242, 254, 0.95);
+}
+body.glass-blue-auth .auth-card .label-optional {
+  color: rgba(148, 163, 184, 0.95);
+  font-weight: 400;
+}
+body.glass-blue-auth .auth-card input {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: #fff;
+  color: #0f172a;
+}
+body.glass-blue-auth .auth-card input:focus {
+  outline: none;
+  border-color: var(--gb-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25);
+}
+body.glass-blue-auth .divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 1.25rem 0;
+}
+body.glass-blue-auth .auth-card .btn-primary {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0369a1, #0c4a6e);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(3, 105, 161, 0.45);
+}
+body.glass-blue-auth .auth-card .btn-primary:hover {
+  filter: brightness(1.08);
+}
+body.glass-blue-auth .auth-footer {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(203, 213, 225, 0.9);
+  margin-top: 1.25rem;
+}
+body.glass-blue-auth .auth-footer a {
+  font-weight: 600;
+  color: var(--gb-cyan);
+}
+body.glass-blue-auth .auth-footer a:hover {
+  color: #a5f3fc;
+}
+
+body.glass-blue-auth #sessionExpiredMsg.hidden {
+  display: none !important;
+}
+body.glass-blue-auth .alert-info {
+  background: rgba(14, 165, 233, 0.2);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  color: #e0f2fe;
+  border-left: 4px solid var(--gb-cyan);
+}
+body.glass-blue-auth .alert-error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fecaca;
+  border-left: 4px solid #f87171;
+}
+body.glass-blue-auth .alert-success {
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #bbf7d0;
+  border-left: 4px solid #4ade80;
+}
+
+/* ——— Auth gallery ——— */
+body.glass-blue-auth .login-gallery {
+  max-width: 1120px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+@media (min-width: 640px) {
+  body.glass-blue-auth .login-gallery {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+body.glass-blue-auth .login-gallery figure {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  background: rgba(15, 39, 68, 0.4);
+}
+body.glass-blue-auth .login-gallery img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+@media (min-width: 900px) {
+  body.glass-blue-auth .login-gallery img {
+    height: 180px;
+  }
+}
+body.glass-blue-auth .login-gallery figcaption {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+  color: rgba(224, 242, 254, 0.92);
+  background: rgba(8, 47, 73, 0.75);
+}
+
+/* ========== Doctor glass portal ========== */
+body.doctor-glass-portal header.doctor-glass-header {
+  background: rgba(15, 39, 68, 0.72);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-edge);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  color: #f8fafc;
+}
+body.doctor-glass-portal header.doctor-glass-header h1 {
+  color: #f8fafc;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+}
+body.doctor-glass-portal header.doctor-glass-header nav a {
+  color: rgba(224, 242, 254, 0.95);
+}
+body.doctor-glass-portal header.doctor-glass-header nav a:hover {
+  background: rgba(34, 211, 238, 0.15);
+  color: #fff;
+}
+body.doctor-glass-portal header.doctor-glass-header .user-info {
+  color: rgba(226, 232, 240, 0.9);
+}
+body.doctor-glass-portal header.doctor-glass-header .btn-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e0f2fe;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body.doctor-glass-portal header.doctor-glass-header .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+body.doctor-glass-portal .doctor-page-hero {
+  margin: 1.25rem 0 1.5rem;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(34, 211, 238, 0.18);
+  min-height: 180px;
+}
+body.doctor-glass-portal .doctor-page-hero img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+@media (min-width: 640px) {
+  body.doctor-glass-portal .doctor-page-hero img {
+    height: 240px;
+  }
+}
+body.doctor-glass-portal .doctor-page-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 22, 40, 0.1) 0%,
+    rgba(8, 47, 73, 0.55) 45%,
+    rgba(12, 74, 110, 0.9) 100%
+  );
+  pointer-events: none;
+}
+body.doctor-glass-portal .doctor-page-hero-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.1rem 1.25rem 1.25rem;
+  z-index: 1;
+}
+body.doctor-glass-portal .doctor-page-hero-caption strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+}
+body.doctor-glass-portal .doctor-page-hero-caption span {
+  font-size: 0.9rem;
+  color: rgba(224, 242, 254, 0.95);
+  line-height: 1.4;
+}
+
+body.doctor-glass-portal main.container h2 {
+  color: #f1f5f9;
+}
+
+body.doctor-glass-portal .card {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-edge);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  color: #e2e8f0;
+}
+body.doctor-glass-portal .card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+body.doctor-glass-portal .card h2,
+body.doctor-glass-portal .card h3 {
+  color: #f8fafc;
+}
+
+body.doctor-glass-portal form label {
+  color: rgba(224, 242, 254, 0.95);
+}
+body.doctor-glass-portal form input,
+body.doctor-glass-portal form select {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #0f172a;
+}
+body.doctor-glass-portal form input:focus,
+body.doctor-glass-portal form select:focus {
+  border-color: var(--gb-cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25);
+}
+
+body.doctor-glass-portal table {
+  box-shadow: none;
+}
+body.doctor-glass-portal th {
+  background: linear-gradient(135deg, #0369a1, #0e7490);
+  color: #fff;
+}
+body.doctor-glass-portal td {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+body.doctor-glass-portal tr:hover {
+  background: rgba(34, 211, 238, 0.08);
+}
+
+body.doctor-glass-portal .stats {
+  margin-bottom: 1.5rem;
+}
+body.doctor-glass-portal .stat-card {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-edge);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+}
+body.doctor-glass-portal .stat-card .num {
+  background: linear-gradient(135deg, #22d3ee, #a5f3fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.doctor-glass-portal .stat-card .label {
+  color: rgba(203, 213, 225, 0.92);
+}
+
+body.doctor-glass-portal .btn-primary {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  box-shadow: 0 4px 18px rgba(14, 165, 233, 0.4);
+}
+body.doctor-glass-portal .btn-primary:hover {
+  background: linear-gradient(135deg, #0369a1, #0c4a6e);
+}
+body.doctor-glass-portal .btn-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: #e0f2fe;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body.doctor-glass-portal .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+body.doctor-glass-portal .btn-danger {
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+}
+
+body.doctor-glass-portal .alert-success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #bbf7d0;
+  border-left-color: #4ade80;
+}
+body.doctor-glass-portal .alert-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #fecaca;
+  border-left-color: #f87171;
+}
