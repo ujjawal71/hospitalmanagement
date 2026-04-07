@@ -20,6 +20,22 @@
     <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
   </header>
   <main class="container">
+    <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
+      <img src="/images/doctor-with-patient-hospital-doctor-working-office-listening-patient-she-is-explaining-her-symptoms-healtcare-assistance-concept_657921-287.jpg" alt="Doctor with patient in consultation" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
+      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;">Manage doctor profiles, departments, and specialization from one place.</p>
+    </div>
+    <section class="card" style="margin-top:0.75rem;">
+      <h3 style="margin-bottom:0.35rem;">How to use this page</h3>
+      <p class="text-muted" style="font-size:0.9rem; margin-bottom:0.65rem;">
+        Each doctor is tied to a department and appears in patient booking flows. Keep names, emails, and specialization current so the right clinician is always shown.
+      </p>
+      <ul style="margin:0; padding-left:1.25rem; font-size:0.88rem; color:#475569; line-height:1.55;">
+        <li><strong>Add Doctor</strong> opens a form: password is required for new accounts; for edits, leave it blank to keep the existing password.</li>
+        <li>Set <strong>Department</strong> from the dropdown—if a specialty is missing, add it under Departments first.</li>
+        <li>Use <strong>Specialization</strong> and <strong>Availability</strong> text to help patients understand who to book and when slots are offered.</li>
+        <li><strong>Delete</strong> removes the doctor permanently—confirm there are no outstanding dependencies if your hospital policy requires it.</li>
+      </ul>
+    </section>
     <h2 class="mb-2">Manage Doctors</h2>
     <button type="button" class="btn btn-primary mb-2" id="addDoctorBtn">Add Doctor</button>
     <div id="message" class="hidden"></div>
@@ -51,6 +67,21 @@
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" class="btn btn-secondary" id="cancelDoctor">Cancel</button>
       </form>
+    </div>
+
+    <section class="card" style="margin-top:0.75rem;">
+      <h3 style="margin-bottom:0.35rem;">Related admin areas</h3>
+      <p class="text-muted" style="font-size:0.88rem; margin-bottom:0.6rem;">Departments drive the doctor dropdown; appointments list shows live bookings linked to these profiles.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+        <a href="/pages/admin-dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+        <a href="/pages/admin-departments.html" class="btn btn-secondary btn-sm">Departments</a>
+        <a href="/pages/admin-appointments.html" class="btn btn-secondary btn-sm">Appointments</a>
+        <a href="/pages/admin-users.html" class="btn btn-secondary btn-sm">Patients</a>
+      </div>
+    </section>
+    <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
+      <img src="/images/old-man-visit-doctor-patient-care-sick-men-67273865.jpg" alt="Patient care and follow-up" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
+      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;"><strong>Manage Doctors</strong> — keep clinician records updated so patients always see the right specialist.</p>
     </div>
   </main>
   <script src="/js/app.js"></script>

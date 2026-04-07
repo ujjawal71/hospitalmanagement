@@ -20,6 +20,22 @@
     <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
   </header>
   <main class="container">
+    <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
+      <img src="/images/old-man-visit-doctor-patient-care-sick-men-67273865.jpg" alt="Patient visit and care" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
+      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;">View and edit registered patients — names, contact, and login details.</p>
+    </div>
+    <section class="card" style="margin-top:0.75rem;">
+      <h3 style="margin-bottom:0.35rem;">How to use this page</h3>
+      <p class="text-muted" style="font-size:0.9rem; margin-bottom:0.65rem;">
+        Every registered patient can log in and book visits. Accurate contact details reduce no-shows and help staff reach people when schedules change.
+      </p>
+      <ul style="margin:0; padding-left:1.25rem; font-size:0.88rem; color:#475569; line-height:1.55;">
+        <li><strong>Edit</strong> updates name, email, phone, and optionally sets a <strong>new password</strong>; leave password blank to keep the current one.</li>
+        <li>Keep <strong>email</strong> unique where your policy requires it—duplicate accounts confuse booking history.</li>
+        <li><strong>Phone</strong> supports reminders and day-of coordination; fill it when patients provide a mobile number.</li>
+        <li><strong>Delete</strong> removes the patient from the system—confirm against retention rules before removing someone with past appointments.</li>
+      </ul>
+    </section>
     <h2 class="mb-2">Patients</h2>
     <div id="message" class="hidden"></div>
     <div class="card">
@@ -46,6 +62,21 @@
         <button type="submit" class="btn btn-primary">Update</button>
         <button type="button" class="btn btn-secondary" id="cancelUser">Cancel</button>
       </form>
+    </div>
+
+    <section class="card" style="margin-top:0.75rem;">
+      <h3 style="margin-bottom:0.35rem;">Related admin areas</h3>
+      <p class="text-muted" style="font-size:0.88rem; margin-bottom:0.6rem;">See who booked what under Appointments; doctors and departments define what patients can choose when scheduling.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+        <a href="/pages/admin-dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+        <a href="/pages/admin-appointments.html" class="btn btn-secondary btn-sm">Appointments</a>
+        <a href="/pages/admin-doctors.html" class="btn btn-secondary btn-sm">Doctors</a>
+        <a href="/pages/admin-departments.html" class="btn btn-secondary btn-sm">Departments</a>
+      </div>
+    </section>
+    <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
+      <img src="/images/doctor-visiting-patient.png" alt="Doctor supporting patients" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
+      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;"><strong>Patients</strong> — accurate profiles help staff communicate clearly and keep the booking system trustworthy.</p>
     </div>
   </main>
   <script src="/js/app.js"></script>
