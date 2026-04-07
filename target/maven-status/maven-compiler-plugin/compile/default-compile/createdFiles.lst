@@ -3,6 +3,7 @@ com/hospital/controller/AdminController.class
 com/hospital/dto/DoctorUpdateRequest.class
 com/hospital/config/SecurityConfig.class
 com/hospital/entity/Patient.class
+com/hospital/dto/PublicStatsDTO.class
 com/hospital/service/TimeSlotService.class
 com/hospital/repository/TimeSlotRepository.class
 com/hospital/service/TokenStore.class

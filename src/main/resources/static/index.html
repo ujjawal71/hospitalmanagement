@@ -1055,9 +1055,20 @@
       window.location.replace('/pages/login.html?session=expired');
     }
     (function loadStats() {
-      fetch('/api/departments/list').then(function(r) { return r.json(); }).then(function(d) {
-        document.getElementById('statDepts').textContent = (d && d.length) ? d.length : '0';
-      }).catch(function() {});
+      function set(id, v) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = (v !== undefined && v !== null) ? String(v) : '0';
+      }
+      fetch('/api/stats/summary').then(function(r) { return r.json(); }).then(function(s) {
+        set('statDoctors', s.doctors);
+        set('statDepts', s.departments);
+        set('statAppts', s.appointments);
+        set('statPatients', s.patients);
+      }).catch(function() {
+        fetch('/api/departments/list').then(function(r) { return r.json(); }).then(function(d) {
+          set('statDepts', d && d.length ? d.length : 0);
+        }).catch(function() {});
+      });
     })();
   </script>
 </body>

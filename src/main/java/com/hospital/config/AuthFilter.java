@@ -27,6 +27,7 @@ public class AuthFilter extends OncePerRequestFilter {
             "/api/auth/register",
             "/api/departments/list",
             "/api/doctors/by-department",
+            "/api/stats/summary",
             "/index.html",
             "/css/",
             "/js/",

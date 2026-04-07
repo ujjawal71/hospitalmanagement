@@ -33,6 +33,7 @@
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/config/WebConfig.java
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/config/AuthFilter.java
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/service/TokenStore.java
+/Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/dto/PublicStatsDTO.java
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/repository/AdminRepository.java
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/dto/AppointmentDTO.java
 /Users/ujjawalkumar/Documents/GitHub/hospitalmanagement/src/main/java/com/hospital/controller/PublicController.java
