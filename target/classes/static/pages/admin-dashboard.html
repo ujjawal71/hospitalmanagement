@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/glass-blue-theme.css">
 </head>
-<body>
-  <header>
+<body class="admin-glass-portal">
+  <header class="glass-portal-header">
     <h1>Admin Dashboard</h1>
     <nav>
       <a href="/pages/admin-dashboard.html">Dashboard</a>
@@ -61,34 +63,34 @@
         Use these sections to manage hospital operations quickly.
       </p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:0.95rem;">
-        <article style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <article class="portal-tile">
           <img src="/images/doctor-with-patient-hospital-doctor-working-office-listening-patient-she-is-explaining-her-symptoms-healtcare-assistance-concept_657921-287.jpg" alt="Doctors panel visual" style="width:100%; height:145px; object-fit:cover; display:block;" loading="lazy">
-          <div style="padding:0.8rem 0.9rem;">
-            <h4 style="margin:0 0 0.35rem;">Doctors</h4>
+          <div class="portal-tile-inner">
+            <h4>Doctors</h4>
             <p class="text-muted" style="font-size:0.84rem; margin:0 0 0.6rem;">Add, update, and organize doctor profiles with specialization and department.</p>
             <a href="/pages/admin-doctors.html" class="btn btn-secondary btn-sm">Open Doctors</a>
           </div>
         </article>
-        <article style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <article class="portal-tile">
           <img src="/images/old-man-visit-doctor-patient-care-sick-men-67273865.jpg" alt="Patients panel visual" style="width:100%; height:145px; object-fit:cover; display:block;" loading="lazy">
-          <div style="padding:0.8rem 0.9rem;">
-            <h4 style="margin:0 0 0.35rem;">Patients</h4>
+          <div class="portal-tile-inner">
+            <h4>Patients</h4>
             <p class="text-muted" style="font-size:0.84rem; margin:0 0 0.6rem;">Review registered patients and maintain clean patient records.</p>
             <a href="/pages/admin-users.html" class="btn btn-secondary btn-sm">Open Users</a>
           </div>
         </article>
-        <article style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <article class="portal-tile">
           <img src="/images/doctor-visiting-patient.png" alt="Appointments panel visual" style="width:100%; height:145px; object-fit:cover; display:block;" loading="lazy">
-          <div style="padding:0.8rem 0.9rem;">
-            <h4 style="margin:0 0 0.35rem;">Appointments</h4>
+          <div class="portal-tile-inner">
+            <h4>Appointments</h4>
             <p class="text-muted" style="font-size:0.84rem; margin:0 0 0.6rem;">Track appointment flow, monitor status updates, and review schedules.</p>
             <a href="/pages/admin-appointments.html" class="btn btn-secondary btn-sm">Open Appointments</a>
           </div>
         </article>
-        <article style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <article class="portal-tile">
           <img src="/images/doctor-with-patient-hospital-doctor-working-office-listening-patient-she-is-explaining-her-symptoms-healtcare-assistance-concept_657921-287.jpg" alt="Departments panel visual" style="width:100%; height:145px; object-fit:cover; display:block;" loading="lazy">
-          <div style="padding:0.8rem 0.9rem;">
-            <h4 style="margin:0 0 0.35rem;">Departments</h4>
+          <div class="portal-tile-inner">
+            <h4>Departments</h4>
             <p class="text-muted" style="font-size:0.84rem; margin:0 0 0.6rem;">Manage department list used by both patient and doctor modules.</p>
             <a href="/pages/admin-departments.html" class="btn btn-secondary btn-sm">Open Departments</a>
           </div>
@@ -99,32 +101,32 @@
     <section class="card" style="margin-top:0.75rem;">
       <h3 style="margin-bottom:0.75rem;">Hospital Care Gallery</h3>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem;">
-        <figure style="margin:0; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <figure class="portal-gallery-figure">
           <img
             src="/images/doctor-with-patient-hospital-doctor-working-office-listening-patient-she-is-explaining-her-symptoms-healtcare-assistance-concept_657921-287.jpg"
             alt="Doctor listening to patient symptoms"
             style="width:100%; height:220px; object-fit:cover; display:block;"
             loading="lazy"
           >
-          <figcaption style="padding:0.65rem 0.85rem; font-size:0.85rem; color:#64748b;">Doctor consulting a patient</figcaption>
+          <figcaption class="portal-gallery-figcaption">Doctor consulting a patient</figcaption>
         </figure>
-        <figure style="margin:0; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <figure class="portal-gallery-figure">
           <img
             src="/images/old-man-visit-doctor-patient-care-sick-men-67273865.jpg"
             alt="Old man visiting doctor"
             style="width:100%; height:220px; object-fit:cover; display:block;"
             loading="lazy"
           >
-          <figcaption style="padding:0.65rem 0.85rem; font-size:0.85rem; color:#64748b;">Patient care and follow-up visit</figcaption>
+          <figcaption class="portal-gallery-figcaption">Patient care and follow-up visit</figcaption>
         </figure>
-        <figure style="margin:0; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;">
+        <figure class="portal-gallery-figure">
           <img
             src="/images/doctor-visiting-patient.png"
             alt="Doctor visiting a patient in hospital"
             style="width:100%; height:220px; object-fit:cover; display:block;"
             loading="lazy"
           >
-          <figcaption style="padding:0.65rem 0.85rem; font-size:0.85rem; color:#64748b;">Doctor visit — hospital care</figcaption>
+          <figcaption class="portal-gallery-figcaption">Doctor visit — hospital care</figcaption>
         </figure>
       </div>
     </section>

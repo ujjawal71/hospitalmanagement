@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Appointments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/glass-blue-theme.css">
 </head>
-<body>
-  <header>
+<body class="admin-glass-portal">
+  <header class="glass-portal-header">
     <h1>Admin - Appointments</h1>
     <nav>
       <a href="/pages/admin-dashboard.html">Dashboard</a>
@@ -22,14 +24,14 @@
   <main class="container">
     <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
       <img src="/images/doctor-visiting-patient.png" alt="Doctor visiting patient" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
-      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;">Monitor every appointment across the hospital with status and scheduling details.</p>
+      <p class="portal-media-caption">Monitor every appointment across the hospital with status and scheduling details.</p>
     </div>
     <section class="card" style="margin-top:0.75rem;">
       <h3 style="margin-bottom:0.35rem;">How to use this page</h3>
       <p class="text-muted" style="font-size:0.9rem; margin-bottom:0.65rem;">
         This view is a hospital-wide schedule: every row ties a patient to a doctor, department, date, time, and status. Use it for daily operations checks and historical audits.
       </p>
-      <ul style="margin:0; padding-left:1.25rem; font-size:0.88rem; color:#475569; line-height:1.55;">
+      <ul class="portal-help-list">
         <li>Scan <strong>Date</strong> and <strong>Time</strong> to see load by day; pair with doctor lists if you need to balance clinics.</li>
         <li><strong>Status</strong> reflects workflow state (e.g. scheduled, completed)—use it to spot stalled or overdue visits.</li>
         <li>Patient and doctor names help reconcile this table with user and doctor admin screens when correcting records.</li>
@@ -58,7 +60,7 @@
     </section>
     <div class="card" style="margin-top:1.25rem; padding:0; overflow:hidden; border-radius:12px;">
       <img src="/images/doctor-patient-visit.png" alt="Appointment and visit workflow" style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy">
-      <p style="padding:0.75rem 1rem; margin:0; font-size:0.88rem; color:#64748b; background:#f8fafc;"><strong>All Appointments</strong> — use this list to audit workloads, spot delays, and support doctors and patients.</p>
+      <p class="portal-media-caption"><strong>All Appointments</strong> — use this list to audit workloads, spot delays, and support doctors and patients.</p>
     </div>
   </main>
   <script src="/js/app.js"></script>

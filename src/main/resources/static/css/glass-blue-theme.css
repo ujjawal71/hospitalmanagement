@@ -1,4 +1,4 @@
-/* Dark blue glassmorphism — auth + doctor portal */
+/* Dark blue glassmorphism — auth + staff/patient portals (doctor, admin, patient) */
 
 :root {
   --gb-deep: #0a1628;
@@ -11,9 +11,9 @@
   --glass-blur: blur(18px);
 }
 
-/* ——— Abstract background glow (auth + doctor) ——— */
+/* ——— Abstract background glow (auth + all glass portals) ——— */
 body.glass-blue-auth,
-body.doctor-glass-portal {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) {
   margin: 0;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
@@ -27,7 +27,7 @@ body.doctor-glass-portal {
 }
 
 body.glass-blue-auth::before,
-body.doctor-glass-portal::before {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal)::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -47,8 +47,8 @@ body.doctor-glass-portal::before {
 
 body.glass-blue-auth .login-page,
 body.glass-blue-auth > header,
-body.doctor-glass-portal > header,
-body.doctor-glass-portal > main {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) > header,
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) > main {
   position: relative;
   z-index: 1;
 }
@@ -347,8 +347,8 @@ body.glass-blue-auth .login-gallery figcaption {
   background: rgba(8, 47, 73, 0.75);
 }
 
-/* ========== Doctor glass portal ========== */
-body.doctor-glass-portal header.doctor-glass-header {
+/* ========== Glass portal (doctor / admin / patient) ========== */
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header {
   background: rgba(15, 39, 68, 0.72);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -356,31 +356,31 @@ body.doctor-glass-portal header.doctor-glass-header {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   color: #f8fafc;
 }
-body.doctor-glass-portal header.doctor-glass-header h1 {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header h1 {
   color: #f8fafc;
   text-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
 }
-body.doctor-glass-portal header.doctor-glass-header nav a {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header nav a {
   color: rgba(224, 242, 254, 0.95);
 }
-body.doctor-glass-portal header.doctor-glass-header nav a:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header nav a:hover {
   background: rgba(34, 211, 238, 0.15);
   color: #fff;
 }
-body.doctor-glass-portal header.doctor-glass-header .user-info {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header .user-info {
   color: rgba(226, 232, 240, 0.9);
 }
-body.doctor-glass-portal header.doctor-glass-header .btn-secondary {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header .btn-secondary {
   background: rgba(255, 255, 255, 0.12);
   color: #e0f2fe;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-body.doctor-glass-portal header.doctor-glass-header .btn-secondary:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) header.glass-portal-header .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
 
-body.doctor-glass-portal .doctor-page-hero {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero {
   margin: 1.25rem 0 1.5rem;
   border-radius: 20px;
   overflow: hidden;
@@ -388,18 +388,18 @@ body.doctor-glass-portal .doctor-page-hero {
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(34, 211, 238, 0.18);
   min-height: 180px;
 }
-body.doctor-glass-portal .doctor-page-hero img {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   display: block;
 }
 @media (min-width: 640px) {
-  body.doctor-glass-portal .doctor-page-hero img {
+  :is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero img {
     height: 240px;
   }
 }
-body.doctor-glass-portal .doctor-page-hero::after {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -411,7 +411,7 @@ body.doctor-glass-portal .doctor-page-hero::after {
   );
   pointer-events: none;
 }
-body.doctor-glass-portal .doctor-page-hero-caption {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero-caption {
   position: absolute;
   left: 0;
   right: 0;
@@ -419,24 +419,24 @@ body.doctor-glass-portal .doctor-page-hero-caption {
   padding: 1.1rem 1.25rem 1.25rem;
   z-index: 1;
 }
-body.doctor-glass-portal .doctor-page-hero-caption strong {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero-caption strong {
   display: block;
   font-size: 1.2rem;
   color: #fff;
   margin-bottom: 0.25rem;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
 }
-body.doctor-glass-portal .doctor-page-hero-caption span {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .doctor-page-hero-caption span {
   font-size: 0.9rem;
   color: rgba(224, 242, 254, 0.95);
   line-height: 1.4;
 }
 
-body.doctor-glass-portal main.container h2 {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) main.container h2 {
   color: #f1f5f9;
 }
 
-body.doctor-glass-portal .card {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .card {
   background: var(--glass-surface);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -444,91 +444,150 @@ body.doctor-glass-portal .card {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
   color: #e2e8f0;
 }
-body.doctor-glass-portal .card:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .card:hover {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
-body.doctor-glass-portal .card h2,
-body.doctor-glass-portal .card h3 {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .card h2,
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .card h3,
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .card h4 {
   color: #f8fafc;
 }
 
-body.doctor-glass-portal form label {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .text-muted {
+  color: rgba(203, 213, 225, 0.88);
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-media-caption {
+  padding: 0.75rem 1rem;
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(224, 242, 254, 0.92);
+  background: rgba(8, 47, 73, 0.65);
+  border-top: 1px solid var(--glass-edge);
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-help-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.88rem;
+  color: rgba(203, 213, 225, 0.92);
+  line-height: 1.55;
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-tile {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-tile-inner {
+  padding: 0.8rem 0.9rem;
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-tile-inner h4 {
+  margin: 0 0 0.35rem;
+  color: #f8fafc;
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-gallery-figure {
+  margin: 0;
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .portal-gallery-figcaption {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.85rem;
+  color: rgba(203, 213, 225, 0.92);
+  background: rgba(8, 47, 73, 0.55);
+  border-top: 1px solid var(--glass-edge);
+}
+
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) form label {
   color: rgba(224, 242, 254, 0.95);
 }
-body.doctor-glass-portal form input,
-body.doctor-glass-portal form select {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) form input,
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) form select {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(255, 255, 255, 0.35);
   color: #0f172a;
 }
-body.doctor-glass-portal form input:focus,
-body.doctor-glass-portal form select:focus {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) form input:focus,
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) form select:focus {
   border-color: var(--gb-cyan);
   box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.25);
 }
 
-body.doctor-glass-portal table {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) table {
   box-shadow: none;
 }
-body.doctor-glass-portal th {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) th {
   background: linear-gradient(135deg, #0369a1, #0e7490);
   color: #fff;
 }
-body.doctor-glass-portal td {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) td {
   border-bottom-color: rgba(255, 255, 255, 0.1);
   color: #e2e8f0;
 }
-body.doctor-glass-portal tr:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) tr:hover {
   background: rgba(34, 211, 238, 0.08);
 }
 
-body.doctor-glass-portal .stats {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .stats {
   margin-bottom: 1.5rem;
 }
-body.doctor-glass-portal .stat-card {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .stat-card {
   background: var(--glass-surface);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-edge);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
 }
-body.doctor-glass-portal .stat-card .num {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .stat-card .num {
   background: linear-gradient(135deg, #22d3ee, #a5f3fc);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-body.doctor-glass-portal .stat-card .label {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .stat-card .label {
   color: rgba(203, 213, 225, 0.92);
 }
 
-body.doctor-glass-portal .btn-primary {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .btn-primary {
   background: linear-gradient(135deg, #0284c7, #0369a1);
   box-shadow: 0 4px 18px rgba(14, 165, 233, 0.4);
 }
-body.doctor-glass-portal .btn-primary:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .btn-primary:hover {
   background: linear-gradient(135deg, #0369a1, #0c4a6e);
 }
-body.doctor-glass-portal .btn-secondary {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .btn-secondary {
   background: rgba(255, 255, 255, 0.12);
   color: #e0f2fe;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-body.doctor-glass-portal .btn-secondary:hover {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }
-body.doctor-glass-portal .btn-danger {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .btn-danger {
   box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
 }
 
-body.doctor-glass-portal .alert-success {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .alert-success {
   background: rgba(34, 197, 94, 0.15);
   border: 1px solid rgba(74, 222, 128, 0.3);
   color: #bbf7d0;
   border-left-color: #4ade80;
 }
-body.doctor-glass-portal .alert-error {
+:is(body.doctor-glass-portal, body.admin-glass-portal, body.patient-glass-portal) .alert-error {
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(248, 113, 113, 0.3);
   color: #fecaca;

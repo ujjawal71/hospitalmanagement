@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/glass-blue-theme.css">
 </head>
-<body>
-  <header>
+<body class="patient-glass-portal">
+  <header class="glass-portal-header">
     <h1>Patient Dashboard</h1>
     <nav>
       <a href="/pages/patient-dashboard.html">Dashboard</a>
@@ -19,9 +21,19 @@
     <a href="/index.html" class="btn btn-secondary btn-sm" id="logoutBtn">Logout</a>
   </header>
   <main class="container">
+    <div class="doctor-page-hero">
+      <img src="/images/old-man-visit-doctor-patient-care-sick-men-67273865.jpg" alt="Patient visit and care at the hospital" width="1200" height="400" loading="eager">
+      <div class="doctor-page-hero-caption">
+        <strong>Your care hub</strong>
+        <span>Book appointments, check your visits, and update your profile — everything you need in one place.</span>
+      </div>
+    </div>
     <h2 class="mb-2">Welcome, <span id="patName"></span></h2>
     <div class="stats">
       <div class="stat-card"><span class="num" id="statAppointments">-</span><span class="label">My Appointments</span></div>
+    </div>
+    <div class="card" style="padding:0; overflow:hidden; margin-top:1.25rem;">
+      <img src="/images/doctor-patient-visit.png" alt="Doctor and patient during a hospital visit" width="1100" height="320" loading="lazy" style="width:100%; height:min(280px, 45vw); object-fit:cover; display:block;">
     </div>
   </main>
   <script src="/js/app.js"></script>
