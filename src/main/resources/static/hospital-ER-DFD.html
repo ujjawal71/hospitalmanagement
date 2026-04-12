@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ER Diagram &amp; DFD — Hospital Appointment System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --entity-blue: #bfdbfe;
+      --entity-blue-border: #3b82f6;
+      --process-pink: #fbcfe8;
+      --process-pink-border: #db2777;
+      --store-bg: #fff;
+      --store-border: #2563eb;
+      --highlight: #fef9c3;
+      --highlight-border: #ca8a04;
+      --oval-bg: #fff;
+      --line: #0f172a;
+      --text: #0f172a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+      color: var(--text);
+      background: linear-gradient(165deg, #e0f2fe 0%, #f0f9ff 40%, #fce7f3 100%);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 3rem;
+    }
+    header.page-head {
+      background: rgba(255,255,255,0.92);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    header.page-head h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0;
+      color: #0c4a6e;
+    }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      background: #0369a1;
+      color: #fff;
+    }
+    .nav-links a.secondary { background: #e0f2fe; color: #0369a1; }
+    .nav-links a:hover { opacity: 0.92; }
+    .subtitle {
+      text-align: center;
+      color: #334155;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    section.panel {
+      background: rgba(255,255,255,0.97);
+      border-radius: 18px;
+      padding: 1.5rem 1.25rem 2rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    section.panel h2 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0c4a6e;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #bae6fd;
+    }
+    section.panel h3 {
+      margin: 1.25rem 0 0.75rem;
+      font-size: 1rem;
+      color: #475569;
+    }
+
+    /* ——— ERD (Chen-style layout) ——— */
+    .erd-layout {
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) auto minmax(260px, 1.35fr);
+      gap: 0.5rem 0.35rem;
+      align-items: start;
+    }
+    .erd-bridge {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      gap: 2.5rem;
+      padding-top: 2rem;
+      min-height: 220px;
+    }
+    @media (max-width: 720px) {
+      .erd-layout { grid-template-columns: 1fr; }
+      .erd-bridge {
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-height: unset;
+        padding: 0.5rem 0;
+        justify-content: center;
+      }
+    }
+    .entity {
+      background: var(--entity-blue);
+      border: 2px solid var(--entity-blue-border);
+      border-radius: 6px;
+      padding: 0.55rem 1rem;
+      font-weight: 700;
+      text-align: center;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    }
+    .entity.hl {
+      background: linear-gradient(180deg, #fef9c3 0%, #fef08a 100%);
+      border-color: var(--highlight-border);
+    }
+    .ovals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: center;
+      margin-top: 0.45rem;
+    }
+    .oval {
+      background: var(--oval-bg);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .oval.pk { border-style: dashed; }
+    .yellow-box {
+      background: var(--highlight);
+      border: 2px solid var(--highlight-border);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 0.5rem auto;
+      max-width: 200px;
+    }
+    .diamond-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 0.65rem 0;
+    }
+    .diamond {
+      width: 120px;
+      height: 120px;
+      background: #fef3c7;
+      border: 2px solid #b45309;
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(180, 83, 9, 0.15);
+    }
+    .diamond span {
+      transform: rotate(-45deg);
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-align: center;
+      line-height: 1.2;
+      max-width: 78px;
+    }
+    .erd-center-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .connector {
+      width: 2px;
+      height: 14px;
+      background: var(--line);
+      margin: 0 auto;
+    }
+    /* Vertical arrow (ERD flow) */
+    .arrow-v {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0.15rem 0;
+    }
+    .arrow-v .stem {
+      width: 2px;
+      height: 14px;
+      background: var(--line);
+    }
+    .arrow-v .head-down {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 9px solid var(--line);
+      margin-top: -1px;
+    }
+    .arrow-v .head-up {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 9px solid var(--line);
+      margin-bottom: -1px;
+    }
+    /* Horizontal arrows (ERD admin links) */
+    .arrow-h-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      min-height: 2.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--line);
+    }
+    .erd-arrow-h {
+      display: flex;
+      align-items: center;
+    }
+    .erd-arrow-h .line {
+      height: 2px;
+      width: min(48px, 12vw);
+      background: var(--line);
+      position: relative;
+    }
+    .erd-arrow-h.to-right .line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-left: 8px solid var(--line);
+    }
+    .erd-arrow-h.from-left .line::before {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-right: 8px solid var(--line);
+    }
+    .erd-arrow-h.both .line {
+      margin: 0 6px;
+    }
+    .erd-arrow-h.both .line::before {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-right: 8px solid var(--line);
+    }
+    .erd-arrow-h.both .line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-left: 8px solid var(--line);
+    }
+    .erd-admin-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .admin-links {
+      font-size: 0.75rem;
+      color: #475569;
+      text-align: center;
+      margin-top: 0.5rem;
+      max-width: 220px;
+    }
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .circle-node {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    /* ——— DFD ——— */
+    .dfd-block {
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+    .dfd-l0 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+    .dfd-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .dfd-entity {
+      background: var(--entity-blue);
+      border: 2px solid var(--entity-blue-border);
+      border-radius: 14px;
+      padding: 0.65rem 1.1rem;
+      font-weight: 700;
+      font-size: 0.88rem;
+      min-width: 100px;
+      text-align: center;
+    }
+    .dfd-process {
+      background: var(--process-pink);
+      border: 2px solid var(--process-pink-border);
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.5rem;
+      line-height: 1.25;
+      box-shadow: 0 4px 16px rgba(219, 39, 119, 0.15);
+    }
+    .dfd-flow-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #334155;
+      max-width: 140px;
+      text-align: center;
+    }
+    .dfd-arrow {
+      font-size: 0.75rem;
+      color: var(--line);
+      font-weight: 600;
+    }
+    /* SVG arrows between DFD entities */
+    .dfd-arrow-svg {
+      flex-shrink: 0;
+      overflow: visible;
+    }
+    .dfd-l0 .dfd-row-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.5rem;
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .dfd-l0 .dfd-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 170px;
+    }
+
+    .dfd-l1-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .dfd-l1-card {
+      border: 2px solid #94a3b8;
+      border-radius: 12px;
+      padding: 0.85rem;
+      background: #f8fafc;
+    }
+    .dfd-l1-card h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.85rem;
+      color: #0f172a;
+    }
+    .dfd-l1-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.78rem;
+      color: #475569;
+    }
+    .data-store {
+      background: var(--store-bg);
+      border: 2px solid var(--store-border);
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      padding: 0.35rem 0.75rem 0.35rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+      margin: 0.25rem 0.25rem 0.25rem 0;
+      position: relative;
+      min-width: 88px;
+      text-align: center;
+    }
+    .data-store::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: -2px;
+      bottom: -2px;
+      width: 10px;
+      border: 2px solid var(--store-border);
+      border-left: none;
+      border-radius: 0 4px 4px 0;
+      background: linear-gradient(transparent 42%, var(--store-border) 42%, var(--store-border) 48%, transparent 48%, transparent 52%, var(--store-border) 52%, var(--store-border) 58%, transparent 58%);
+    }
+    .stores-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+    .note {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 1rem;
+      padding: 0.65rem 0.85rem;
+      background: #f1f5f9;
+      border-radius: 10px;
+      border-left: 4px solid #0369a1;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Hospital Appointment System — ER &amp; DFD</h1>
+      <div class="nav-links">
+        <a href="/index.html">Back to app</a>
+        <a class="secondary" href="/ER-DIAGRAM.html">Mermaid ER</a>
+        <a class="secondary" href="/DFD-DIAGRAM.html">Mermaid DFD</a>
+      </div>
+    </header>
+    <p class="subtitle">Project entities: Patient, Doctor, Admin, Department, Appointment, TimeSlot — diagrams aligned with this codebase.</p>
+
+    <!-- ERD -->
+    <section class="panel">
+      <h2>Entity Relationship Diagram (ERD)</h2>
+      <div class="erd-layout">
+        <div class="erd-admin-col">
+          <div class="entity">Admin</div>
+          <div class="ovals">
+            <span class="oval pk">admin_id (PK)</span>
+            <span class="oval">name</span>
+            <span class="oval">email</span>
+            <span class="oval">password</span>
+          </div>
+          <p class="admin-links">Manages doctors, departments, patients, and views all appointments (JPA: <code>Admin</code> entity).</p>
+        </div>
+        <div class="erd-bridge" aria-hidden="true">
+          <div style="text-align:center;">
+            <div class="erd-arrow-h to-right"><span class="line"></span></div>
+            <span style="font-size:0.62rem;font-weight:700;color:#334155;display:block;margin-top:0.2rem;">→ Patient</span>
+          </div>
+          <div style="text-align:center;">
+            <div class="erd-arrow-h to-right"><span class="line"></span></div>
+            <span style="font-size:0.62rem;font-weight:700;color:#334155;display:block;margin-top:0.2rem;">→ Doctor</span>
+          </div>
+        </div>
+        <div class="erd-center-col">
+          <div class="entity hl">Patient</div>
+          <div class="ovals">
+            <span class="oval pk">patient_id (PK)</span>
+            <span class="oval">name</span>
+            <span class="oval">email</span>
+            <span class="oval">password</span>
+            <span class="oval">phone</span>
+          </div>
+          <div class="yellow-box">Doctor search<br><span style="font-weight:500;font-size:0.7rem;">(by department)</span></div>
+          <div class="arrow-v"><span class="stem"></span><span class="head-down"></span></div>
+          <div class="diamond-wrap">
+            <div class="diamond"><span>Books<br>appointment</span></div>
+          </div>
+          <div class="arrow-v"><span class="stem"></span><span class="head-down"></span></div>
+          <div class="entity hl">Doctor</div>
+          <div class="ovals">
+            <span class="oval pk">doctor_id (PK)</span>
+            <span class="oval">name</span>
+            <span class="oval">email</span>
+            <span class="oval">password</span>
+            <span class="oval">specialization</span>
+            <span class="oval">availability</span>
+            <span class="oval">department_id (FK)</span>
+          </div>
+          <div class="yellow-box">View appointment request</div>
+          <div class="arrow-v"><span class="stem"></span><span class="head-down"></span></div>
+          <div class="flow-row">
+            <span class="circle-node">Accept</span>
+            <div class="erd-arrow-h both" aria-hidden="true"><span class="line" style="width:36px;"></span></div>
+            <span class="circle-node">Reject</span>
+          </div>
+          <p class="admin-links" style="margin-top:0.75rem;">Status flow in app: <strong>PENDING</strong> → <strong>APPROVED</strong> / <strong>CANCELLED</strong> / <strong>COMPLETED</strong> (<code>AppointmentStatus</code>).</p>
+        </div>
+      </div>
+      <h3>Supporting entity</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;">
+        <div>
+          <div class="entity" style="display:inline-block;">Department</div>
+          <div class="ovals" style="justify-content:flex-start;">
+            <span class="oval pk">id (PK)</span>
+            <span class="oval">name</span>
+            <span class="oval">description</span>
+          </div>
+        </div>
+        <div>
+          <div class="entity" style="display:inline-block;">Appointment</div>
+          <div class="ovals" style="justify-content:flex-start;">
+            <span class="oval pk">appointment_id (PK)</span>
+            <span class="oval">patient_id (FK)</span>
+            <span class="oval">doctor_id (FK)</span>
+            <span class="oval">date</span>
+            <span class="oval">time</span>
+            <span class="oval">status</span>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0.75rem 0 0;font-size:0.78rem;font-weight:600;color:#334155;">
+        <span>Doctor</span> → <strong>Department</strong> (many:1 · FK <code>department_id</code>)
+        <span style="color:#94a3b8;margin:0 0.5rem;">|</span>
+        <span>Patient</span> → <strong>Appointment</strong> ← <span>Doctor</span> (FKs <code>patient_id</code>, <code>doctor_id</code>)
+      </p>
+    </section>
+
+    <!-- DFD Level 0 -->
+    <section class="panel">
+      <h2>Data Flow Diagram — Level 0 (Context)</h2>
+      <div class="dfd-block dfd-l0">
+        <div class="dfd-row-main">
+          <div class="dfd-cluster">
+            <div class="dfd-entity">Patient</div>
+            <p class="dfd-flow-label" style="margin-top:0.5rem;">To system: login, register, search, booking, profile</p>
+          </div>
+          <svg class="dfd-arrow-svg" width="90" height="56" viewBox="0 0 90 56" aria-label="Data flow to system">
+            <defs>
+              <marker id="dfdM1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#0f172a"></path>
+              </marker>
+            </defs>
+            <line x1="4" y1="18" x2="82" y2="18" stroke="#0f172a" stroke-width="2" marker-end="url(#dfdM1)"></line>
+            <line x1="82" y1="38" x2="4" y2="38" stroke="#0f172a" stroke-width="2" marker-end="url(#dfdM1)"></line>
+            <text x="18" y="14" font-size="9" font-family="Plus Jakarta Sans, sans-serif" fill="#475569">to</text>
+            <text x="10" y="52" font-size="9" font-family="Plus Jakarta Sans, sans-serif" fill="#475569">from</text>
+          </svg>
+          <div class="dfd-process">Hospital<br>Appointment<br>System</div>
+          <svg class="dfd-arrow-svg" width="90" height="56" viewBox="0 0 90 56" aria-label="Data flow doctor system">
+            <defs>
+              <marker id="dfdM2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#0f172a"></path>
+              </marker>
+            </defs>
+            <line x1="82" y1="22" x2="6" y2="22" stroke="#0f172a" stroke-width="2" marker-end="url(#dfdM2)"></line>
+            <line x1="6" y1="40" x2="82" y2="40" stroke="#0f172a" stroke-width="2" marker-end="url(#dfdM2)"></line>
+            <text x="52" y="18" font-size="9" font-family="Plus Jakarta Sans, sans-serif" fill="#475569">to</text>
+            <text x="44" y="52" font-size="9" font-family="Plus Jakarta Sans, sans-serif" fill="#475569">from</text>
+          </svg>
+          <div class="dfd-cluster">
+            <div class="dfd-entity">Doctor</div>
+            <p class="dfd-flow-label" style="margin-top:0.5rem;">Appointments, time slots, status updates ↔ lists</p>
+          </div>
+        </div>
+        <div class="dfd-row" style="margin-top:1.25rem;padding-top:1rem;border-top:1px dashed #cbd5e1;align-items:center;">
+          <div class="dfd-entity">Admin</div>
+          <svg class="dfd-arrow-svg" width="100" height="36" viewBox="0 0 100 36" aria-label="Admin system flow">
+            <defs>
+              <marker id="dfdM3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#0f172a"></path>
+              </marker>
+              <marker id="dfdM4" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                <path d="M0,0 L7,3.5 L0,7 z" fill="#64748b"></path>
+              </marker>
+            </defs>
+            <line x1="6" y1="12" x2="92" y2="12" stroke="#0f172a" stroke-width="2" marker-end="url(#dfdM3)"></line>
+            <line x1="92" y1="24" x2="6" y2="24" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#dfdM4)"></line>
+          </svg>
+          <p class="dfd-flow-label" style="max-width:340px;text-align:left;"><strong>Hospital Appointment System</strong><br><span style="font-weight:500;">Solid: admin commands · Dashed: reports / lists</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DFD Level 1 -->
+    <section class="panel">
+      <h2>Data Flow Diagram — Level 1</h2>
+      <p style="font-size:0.88rem;color:#64748b;margin:0 0 1rem;">Major processes and data stores (Tutorly-style breakdown, mapped to this project).</p>
+      <div class="stores-row">
+        <span class="data-store">patients</span>
+        <span class="data-store">doctors</span>
+        <span class="data-store">departments</span>
+        <span class="data-store">appointments</span>
+        <span class="data-store">time_slots</span>
+        <span class="data-store">admins</span>
+      </div>
+      <div class="dfd-l1-grid">
+        <div class="dfd-l1-card">
+          <h4>1.0 Registration &amp; login</h4>
+          <ul>
+            <li>Patient / Doctor / Admin → credentials</li>
+            <li>Reads &amp; writes: <strong>patients</strong>, <strong>doctors</strong>, <strong>admins</strong></li>
+          </ul>
+        </div>
+        <div class="dfd-l1-card">
+          <h4>2.0 Manage doctors &amp; departments</h4>
+          <ul>
+            <li>Admin maintains departments and doctor profiles</li>
+            <li>Stores: <strong>departments</strong>, <strong>doctors</strong></li>
+          </ul>
+        </div>
+        <div class="dfd-l1-card">
+          <h4>3.0 Search doctors</h4>
+          <ul>
+            <li>Patient: department filter → doctor list</li>
+            <li>Reads: <strong>departments</strong>, <strong>doctors</strong></li>
+          </ul>
+        </div>
+        <div class="dfd-l1-card">
+          <h4>4.0 Booking &amp; scheduling</h4>
+          <ul>
+            <li>Patient booking request → doctor views / updates status</li>
+            <li>Store: <strong>appointments</strong></li>
+          </ul>
+        </div>
+        <div class="dfd-l1-card">
+          <h4>5.0 Time slots</h4>
+          <ul>
+            <li>Doctor publishes slots; used for availability context</li>
+            <li>Store: <strong>time_slots</strong></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
